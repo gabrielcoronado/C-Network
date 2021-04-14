@@ -13,10 +13,11 @@ const Loading = () => {
 
 const Div = styled.div`
   background: transparent;
-  display: flex;
-  align-items: center;
   justify-content: center;
-  margin-top: 25px;
+  align-items: center;
+  margin-top: 50px;
+  display: flex;
+  width: 100vw;
 `;
 
 const spin = keyframes`

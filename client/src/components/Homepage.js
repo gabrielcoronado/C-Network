@@ -1,17 +1,19 @@
 import React from "react";
-// import { MovieContext } from "./providers/MovieProvider";
-// import { useHistory } from "react-router-dom";
-import Trending from "./Trending";
+// import Trending from "./Trending";
+import styled from "styled-components";
+import MovieSearch from "./MovieSearch";
 
 require("dotenv").config();
 
 const Homepage = () => {
   return (
-    <div>
-      Homepage
-      <Trending />
-    </div>
+    <Wrapper>
+      <MovieSearch />
+      {/* <Trending /> */}
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div``;
 
 export default Homepage;

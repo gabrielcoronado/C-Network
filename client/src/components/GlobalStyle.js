@@ -5,12 +5,15 @@ const GlobalStyle = createGlobalStyle`
 html,
 body,
 div,
-span {
+span,
+button,
+input {
   margin: 0;
   padding: 0;
   border: 0;
-  background: #F8F9FA;
+  max-width: 1500px;
   vertical-align: baseline;
+  font-family: Kiwi Maru, serif;
 }
 
 
