@@ -1,42 +1,55 @@
 import React from "react";
-// import { MdMovieFilter } from "react-icons/md";
+import logo from "../../newlogo.svg";
 import styled from "styled-components";
-// import { useHistory } from "react-router-dom";
 import { Link } from "react-router-dom";
 
 const NavBar = () => {
-  // const history = useHistory();
-
   return (
     <Wrapper>
-      <Link to="/">
-        {/* <MdMovieFilter size={28} color={"white"} /> */}
-        <P>TCN</P>
-      </Link>
-      <Nav>{/* <P>Login</P> */}</Nav>
+      <StyledLink to="/">
+        <Img src={logo} />
+        <P>The Couch Network</P>
+      </StyledLink>
+      <Nav>
+        <StyledLink to="/login">Login</StyledLink>
+      </Nav>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.header`
-  padding-left: 20px;
-  padding-right: 20px;
-  display: flex;
+  background-color: #032541;
+  padding-right: 25px;
   flex-direction: row;
   align-items: center;
-  font-family: sans-serif;
-  background-color: #032541;
+  padding-left: 25px;
+  display: flex;
+`;
+
+const StyledLink = styled(Link)`
+  text-decoration: none;
+  font-size: 16px;
+  display: flex;
+  color: white;
 `;
 
 const P = styled.p`
-  color: white;
   padding-left: 10px;
-  font-size: 20px;
+  font-size: 23px;
+  width: 250px;
+  color: white;
+`;
+
+const Img = styled.img`
+  padding-top: 13px;
+  height: 53px;
 `;
 
 const Nav = styled.div`
-  float: right;
+  justify-content: flex-end;
   background-color: #032541;
+  display: flex;
+  width: 100%;
 `;
 
 export default NavBar;

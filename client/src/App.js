@@ -1,7 +1,8 @@
-// import logo from "./newlogo.svg";
 import Movie from "./components/Movie";
 import styled from "styled-components";
 import Homepage from "./components/Homepage";
+import Login from "./components/NavBar/login";
+import RandomMovie from "./components/RandomMovie";
 import NavBar from "./components/NavBar/NavBar";
 import GlobalStyle from "./components/GlobalStyle";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
@@ -19,7 +20,13 @@ function App() {
             <Route exact path="/">
               <Homepage />
             </Route>
-            <Route exact path="/movie/:id">
+            <Route exact path="/login">
+              <Login />
+            </Route>
+            <Route exact path="/movies/randomsearch">
+              <RandomMovie />
+            </Route>
+            <Route exact path="/movies/:id">
               <Movie />
             </Route>
           </Switch>
