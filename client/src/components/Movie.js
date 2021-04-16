@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import UserContext from "./providers/UserProvider";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useParams } from "react-router-dom";
 import { GiRoundStar } from "react-icons/gi";
@@ -6,20 +7,41 @@ import { ImBlocked } from "react-icons/im";
 import { FaRegEye } from "react-icons/fa";
 import styled from "styled-components";
 import Loading from "./Loading";
+import Post from "./post/Post";
 
 const Movie = () => {
+  const [currentUser, setCurrentUser] = useState();
+  // const { currentUser } = useContext(UserContext);
+  console.log("Movie CurrentUser", currentUser);
   const [singleMovie, setSingleMovie] = useState();
+  const [blackisted, setBlacklisted] = useState();
+  const [seen, setSeen] = useState();
+
   const base_url = `https://image.tmdb.org`;
-  const posterSize = `/t/p/w500`;
   const backdropSize = `/t/p/original`;
+  const posterSize = `/t/p/w500`;
 
   const { id } = useParams();
 
   const time_converter = num => {
     let hours = Math.floor(num / 60);
     let minutes = num % 60;
-    return hours + "h" + " " + minutes + "m";
+    return hours + "h " + minutes + "m";
   };
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/users/6075f0a52753174f496ff855`, {
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    }).then(res =>
+      res.json().then(data => {
+        console.log("user", data.data[0]);
+        setCurrentUser(data.data[0]);
+      })
+    );
+  }, []);
 
   useEffect(() => {
     if (id) {
@@ -30,12 +52,60 @@ const Movie = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("movie", data.data);
+          // console.log("movie", data.data);
           setSingleMovie(data.data);
         })
       );
     }
-  }, []);
+  }, [id]);
+
+  const handleBlacklist = async () => {
+    const res = await fetch(`http://localhost:4000/movies/${id}/blacklist`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("blacklisted", data);
+  };
+
+  const handleSeen = async () => {
+    const res = await fetch(`http://localhost:4000/movies/${id}/seen`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("seen", data);
+  };
+
+  const postAReview = async () => {
+    const res = await fetch(`http://localhost:4000/reviews`, {
+      method: "POST",
+      body: JSON.stringify({
+        currentUser,
+        // comment,
+        // rating,
+        id
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("seen", data);
+  };
 
   return singleMovie ? (
     <Wrapper>
@@ -69,10 +139,10 @@ const Movie = () => {
           <Button>
             <GiRoundStar size={20} />
           </Button>
-          <Button>
+          <Button onClick={() => handleSeen()}>
             <FaRegEye size={20} />
           </Button>
-          <Button>
+          <Button onClick={() => handleBlacklist()}>
             <ImBlocked size={20} />
           </Button>
           <Tagline>
@@ -82,6 +152,7 @@ const Movie = () => {
           <Overview>{singleMovie.overview}</Overview>
         </MovieInfo>
       </MovieWrapper>
+      <Post />
     </Wrapper>
   ) : (
     <Loading />
@@ -92,7 +163,7 @@ const Wrapper = styled.div`
   justify-content: center;
   padding: 40px 60px;
   max-width: 1400px;
-  display: flex;
+  /* display: flex; */
 `;
 
 const Poster = styled.img`

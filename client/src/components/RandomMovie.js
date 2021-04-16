@@ -1,9 +1,11 @@
 import React from "react";
 import styled from "styled-components";
+import FilterBar from "./FilterBar";
 
 const RandomMovie = () => {
   return (
     <Wrapper>
+      <FilterBar />
       <div>Random Movie</div>
       <Button>Search!</Button>
     </Wrapper>

@@ -4,6 +4,7 @@ import App from "./App";
 // import { createStore } from "redux"
 // import { Provider } from "react-redux";
 import { MovieProvider } from "./components/providers/MovieProvider";
+import { UserProvider } from "./components/providers/UserProvider";
 
 // const store = createStore(
 //   movieReducer,
@@ -12,11 +13,13 @@ import { MovieProvider } from "./components/providers/MovieProvider";
 
 ReactDOM.render(
   <MovieProvider>
-    {/* <Provider store={store}> */}
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-    {/* </Provider> */}
+    <UserProvider>
+      {/* <Provider store={store}> */}
+      <React.StrictMode>
+        <App />
+      </React.StrictMode>
+      {/* </Provider> */}
+    </UserProvider>
   </MovieProvider>,
   document.getElementById("root")
 );
