@@ -29,7 +29,8 @@ const handleResult = (client, result, data, res) => {
   console.log("Disconnected!");
 };
 
-const handleMovieDbResponse = data => {
+const handleMovieDbResponse = (data, res) => {
+  // console.log("data", data);
   data
     ? res.status(200).json({ status: 200, data: data })
     : res.status(400).json({ status: 400, message: "no data" });
@@ -41,7 +42,7 @@ const dailyTrend = async (req, res) => {
   const fetch_response = await fetch(api_url);
   const data = await fetch_response.json();
 
-  handleMovieDbResponse(data);
+  handleMovieDbResponse(data, res);
 };
 
 // Weekly Trends
@@ -50,18 +51,43 @@ const weeklyTrend = async (req, res) => {
   const fetch_response = await fetch(api_url);
   const data = await fetch_response.json();
 
-  handleMovieDbResponse(data);
+  handleMovieDbResponse(data, res);
+};
+
+//Get all genres
+const getAllGenres = async (req, res) => {
+  const api_url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=en-US`;
+  const fetch_response = await fetch(api_url);
+  const data = await fetch_response.json();
+
+  handleMovieDbResponse(data, res);
 };
 
 //Fetching data for a single Movie.
-const getSingleMovie = async (req, res) => {
+const getSingleMoviebyId = async (req, res) => {
   const { id } = req.params;
-  console.log("BE id", id);
   const api_url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
   const fetch_response = await fetch(api_url);
   const data = await fetch_response.json();
 
-  handleMovieDbResponse(data);
+  handleMovieDbResponse(data, res);
+};
+
+//To Do
+const getMovieByQuery = async (req, res) => {
+  try {
+    const { query } = req.params;
+    console.log("query", query);
+
+    const api_url = `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}`;
+
+    const fetch_response = await fetch(api_url);
+    const data = await fetch_response.json();
+
+    handleMovieDbResponse(data, res);
+  } catch (err) {
+    console.log("error", err);
+  }
 };
 
 //Get reviews by user
@@ -161,6 +187,41 @@ const unfollowUser = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
+const blacklistMovie = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const movieToBlacklist = req.params.id;
+
+  const { currentUser } = req.body;
+  console.log("currentUser", currentUser);
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $addToSet: { blacklist: movieToBlacklist } }
+    );
+
+  handleResult(client, result, req.body, res);
+};
+
+const markMovieAsSeen = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const seenMovie = req.params.id;
+
+  const { currentUser } = req.body;
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $addToSet: { seen: seenMovie } }
+    );
+
+  handleResult(client, result, req.body, res);
+};
+
 const getUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
@@ -190,12 +251,16 @@ const getUser = async (req, res) => {
 
 module.exports = {
   dailyTrend,
-  getSingleMovie,
+  getSingleMoviebyId,
   weeklyTrend,
   getReviewsByUser,
   newReview,
   createNewUser,
   followUser,
   unfollowUser,
-  getUser
+  getUser,
+  blacklistMovie,
+  markMovieAsSeen,
+  getAllGenres,
+  getMovieByQuery
 };
