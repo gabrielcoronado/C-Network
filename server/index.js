@@ -5,10 +5,11 @@ const morgan = require("morgan");
 const express = require("express");
 const {
   dailyTrend,
-  getSingleMovie,
+  getSingleMoviebyId,
   weeklyTrend,
   markMovieAsSeen,
   blacklistMovie,
+  getMovieByQuery,
   likeReview,
   newReview,
   followUser,
@@ -29,8 +30,8 @@ express()
 
   .get(`/trending/day`, dailyTrend)
   .get(`/trending/week`, weeklyTrend)
-  .get(`/movies/:id`, getSingleMovie)
-
+  .get(`/movies/:id`, getSingleMoviebyId)
+  .get(`/movies/movie/:query`, getMovieByQuery)
   //endpoints
 
   //Like a review
@@ -58,17 +59,15 @@ express()
   // .get(`/movies/multi`)
 
   //Get all genres
-  //   .get(`/movies/genres`, getAllGenres)
+  .get(`/genres`, getAllGenres)
 
   //Create a new user
   .post(`/users`, createNewUser)
 
   //   .get(`/movies/randomsearch`, getRandomMovie)
 
-  // currentUser siempre va a estar en el body
+  .put(`/movies/:id/blacklist`, blacklistMovie)
 
-  // .post(`/movies/:id/blacklist`, blacklistMovie)
-
-  // .post(`/movies/:id/seen`, markMovieAsSeen)
+  .put(`/movies/:id/seen`, markMovieAsSeen)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));
