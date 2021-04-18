@@ -25,17 +25,17 @@ function App() {
             <Route exact path="/login">
               <Login />
             </Route>
-            <Route exact path="/users/:id">
+            <Route exact path="/users/6075f0a52753174f496ff855">
               <Profile />
+            </Route>
+            <Route exact path="/movies">
+              <MovieResults />
             </Route>
             <Route exact path="/movies/randomsearch">
               <RandomMovie />
             </Route>
             <Route exact path="/movies/:id">
               <Movie />
-            </Route>
-            <Route exact path="/movies/movie/:query">
-              <MovieResults />
             </Route>
           </Switch>
         </MainPageGridWrapper>
@@ -46,11 +46,11 @@ function App() {
 
 const Wrapper = styled.div`
   position: relative;
-  display: grid;
+  /* display: grid;
   grid-template-areas:
     "header header header header header header"
     "sidebar main main main main main";
-  grid-template-columns: min-content auto;
+  grid-template-columns: min-content auto; */
 `;
 
 const NavBarGridWrapper = styled.div`

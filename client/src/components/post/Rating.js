@@ -1,37 +1,33 @@
-import React, { useState } from "react";
+import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Container, Radio, Rating } from "./RatingStyles";
 
-const Rate = () => {
-  const [rate, setRate] = useState(0);
-  console.log("rate", rate);
+const Rate = ({ handleClick, rating }) => {
   return (
     <Container>
       {[...Array(5)].map((item, index) => {
         const givenRating = index + 1;
         return (
-          <label>
+          <label key={index}>
             <Radio
               type="radio"
               value={givenRating}
-              onClick={() => {
-                setRate(givenRating);
-              }}
+              onClick={() => handleClick && handleClick(givenRating)}
             />
             <Rating>
               <FaStar
                 color={
-                  rate === 0 || rate < givenRating
+                  rating === 0 || rating < givenRating
                     ? "000"
-                    : givenRating === 1
+                    : rating === 1
                     ? "#ff4545"
-                    : givenRating === 2
+                    : rating === 2
                     ? "#ffa534"
-                    : givenRating === 3
+                    : rating === 3
                     ? "#ffe234"
-                    : givenRating === 4
+                    : rating === 4
                     ? "#b7dd29"
-                    : givenRating === 5
+                    : rating === 5
                     ? "#57e32c"
                     : "000"
                 }
