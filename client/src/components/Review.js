@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-// import styled from "styled-components";
 import profile from "../PaiMei.jpeg";
 import Rating from "./post/Rating";
 import Loading from "./Loading";
+import moment from "moment";
 import {
   Wrapper,
   Img,
@@ -12,13 +12,15 @@ import {
   Tag,
   RatingWrapper,
   Comment,
-  PostData
+  PostData,
+  Date
 } from "./styling/ReviewStyles";
 
 const Review = ({ review, tagName }) => {
   const [movie, setMovie] = useState();
   const base_url = `https://image.tmdb.org`;
   const posterSize = `/t/p/w500`;
+  const date = moment(review.createdAt).format("DD-MM-YYYY HH:mm a");
 
   useEffect(() => {
     fetch(`http://localhost:4000/movies/${review.movie_id}`, {
@@ -41,6 +43,8 @@ const Review = ({ review, tagName }) => {
       </div>
       <PostData>
         <Title>{movie.title}</Title>
+
+        <Date>{date}</Date>
         <RatingWrapper>
           <Rating rating={review.rating} size={"small"} />
         </RatingWrapper>

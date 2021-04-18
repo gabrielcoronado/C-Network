@@ -13,6 +13,12 @@ export const ReviewsWrapper = styled.div`
   color: whitesmoke;
 `;
 
+export const Date = styled.div`
+  font-size: 11px;
+  padding: 10px 0;
+  color: gray;
+`;
+
 export const Img = styled.img`
   margin-right: 15px;
   border-radius: 50%;
@@ -30,7 +36,7 @@ export const User = styled.div`
   display: flex;
 `;
 
-export const Title = styled.div`
+export const Title = styled.span`
   font-size: 25px;
 `;
 
