@@ -1,6 +1,6 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
-import { Container, Radio, Rating } from "./RatingStyles";
+import { Radio, Rating } from "./RatingStyles";
 
 const Rate = ({ handleClick, rating, size }) => {
   const bigStar = {
@@ -27,7 +27,7 @@ const Rate = ({ handleClick, rating, size }) => {
               <FaStar
                 color={
                   rating === 0 || rating < givenRating
-                    ? "000"
+                    ? "gray"
                     : rating === 1
                     ? "#ff4545"
                     : rating === 2
@@ -38,7 +38,7 @@ const Rate = ({ handleClick, rating, size }) => {
                     ? "#b7dd29"
                     : rating === 5
                     ? "#57e32c"
-                    : "000"
+                    : "gray"
                 }
               />
             </Rating>

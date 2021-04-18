@@ -1,12 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "./providers/UserProvider";
 import { MovieContext } from "./providers/MovieProvider";
+import { UserContext } from "./providers/UserProvider";
 import { useHistory } from "react-router-dom";
-// import { useParams } from "react-router-dom";
-import styled from "styled-components";
 import FilterBar from "./FilterBar";
 import Loading from "./Loading";
 import SearchBar from "./SearchBar";
+import {
+  Div,
+  BarDiv,
+  CardWrapper,
+  Card,
+  Wrapper,
+  Title,
+  ReleaseDate,
+  Poster
+} from "./styling/MovieResultsStyles";
 
 const MovieResults = () => {
   const [isShowingTrends, setIsShowingTrends] = useState(false);
@@ -87,54 +95,5 @@ const MovieResults = () => {
     <Loading />
   );
 };
-
-const Wrapper = styled.div``;
-
-const Div = styled.div`
-  display: flex;
-  padding-right: 30px;
-`;
-
-const BarDiv = styled.div`
-  margin: 0 auto;
-  width: 490px;
-`;
-
-const CardWrapper = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  width: 100%;
-`;
-
-const Card = styled.div`
-  width: 200px;
-  margin: 0px 7px 40px 7px;
-  border-radius: 7px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border: 1px solid gray;
-  cursor: pointer;
-`;
-
-const Title = styled.p`
-  font-size: 15px;
-  padding-left: 8px;
-  margin-bottom: 0;
-`;
-
-const ReleaseDate = styled.p`
-  font-size: 12px;
-  margin-top: 3px;
-  color: gray;
-  padding-left: 8px;
-`;
-
-const Poster = styled.img`
-  border-top-right-radius: 7px;
-  border-top-left-radius: 7px;
-  height: 270px;
-  width: 200px;
-`;
 
 export default MovieResults;

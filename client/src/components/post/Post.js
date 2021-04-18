@@ -1,6 +1,6 @@
 import React, { useState } from "react";
+import { PostWrapper, CommentBox, Button } from "../styling/PostStyles";
 import Rating from "./Rating";
-import styled from "styled-components";
 
 const Post = ({ currentUser, id, hidden }) => {
   const [rating, setRating] = useState(0);
@@ -46,37 +46,5 @@ const Post = ({ currentUser, id, hidden }) => {
     </PostWrapper>
   ) : null;
 };
-
-const PostWrapper = styled.div`
-  flex-direction: column;
-  padding-bottom: 30px;
-  align-items: center;
-  margin-top: 100px;
-  display: flex;
-`;
-
-const CommentBox = styled.textarea`
-  border-radius: 10px;
-  padding: 10px 20px;
-  align-self: center;
-  background: lightgray;
-  font-size: 17px;
-  outline: none;
-  border: none;
-  color: black;
-  height: 20vh;
-  width: 40vw;
-`;
-
-const Button = styled.button`
-  background: #032541;
-  border-radius: 10px;
-  margin-top: 15px;
-  font-size: 15px;
-  outline: none;
-  border: none;
-  width: 150px;
-  height: 50px;
-`;
 
 export default Post;
