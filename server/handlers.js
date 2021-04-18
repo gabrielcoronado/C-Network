@@ -94,7 +94,7 @@ const getMovieByQuery = async (req, res) => {
 const getReviewsByUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
-    const reviewerId = req.params.id;
+    const { reviewers } = req.body;
 
     //aggregate lets us use the lookup which allows us to match/import data from other collections
     const result = await db
@@ -108,7 +108,13 @@ const getReviewsByUser = async (req, res) => {
             as: "reviewer"
           }
         },
-        { $match: { reviewerId: ObjectID(reviewerId) } }
+        // { $match : { $in: reviewers } } ]
+
+        {
+          $match: {
+            reviewerId: { $in: reviewers.map(reviewer => ObjectID(reviewer)) }
+          }
+        }
       ])
       .toArray();
 
@@ -122,15 +128,25 @@ const newReview = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
 
-    const { currentUser, comment, rating, movieId } = req.body;
+    const { currentUser, comment, rating, id } = req.body;
 
     const result = await db.collection("reviews").insertOne({
-      movie_id: movieId,
-      reviewerId: currentUser._id,
+      movie_id: id,
+      reviewerId: ObjectID(currentUser._id),
       comment,
-      rating
+      rating,
+      createdAt: new Date().toUTCString()
     });
     assert.equal(1, result.insertedCount);
+
+    const reviewId = result.ops[0]._id;
+
+    const result2 = await db
+      .collection("users")
+      .updateOne(
+        { _id: ObjectID(currentUser._id) },
+        { $addToSet: { reviews: ObjectID(reviewId) } }
+      );
 
     handleResult(client, result, req.body, res);
   } catch (err) {
@@ -237,6 +253,14 @@ const getUser = async (req, res) => {
             localField: "following",
             foreignField: "_id",
             as: "followingObject"
+          }
+        },
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "reviews",
+            foreignField: "_id",
+            as: "reviewsObject"
           }
         },
         { $match: { _id: ObjectID(userId) } }
