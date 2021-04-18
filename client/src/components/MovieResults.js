@@ -31,7 +31,6 @@ const MovieResults = () => {
 
   useEffect(() => {
     if (searchInput && searchSubmitted) {
-      console.log("IF");
       fetch(`http://localhost:4000/movies/movie/${searchInput}`, {
         headers: {
           "Content-Type": "application/json",
@@ -62,10 +61,7 @@ const MovieResults = () => {
   };
 
   useEffect(() => {
-    console.log("Movie DailyTrends OUTSIDE IF");
-
     if (!searchInput && !searchSubmitted) {
-      console.log("Movie DailyTrends INSIDE IF");
       setIsShowingTrends(true);
       setMovies(dailyTrends);
     }

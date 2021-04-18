@@ -33,6 +33,7 @@ export const Poster = styled.img`
 
 export const User = styled.div`
   align-items: center;
+  cursor: pointer;
   display: flex;
 `;
 

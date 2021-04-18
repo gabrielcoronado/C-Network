@@ -3,7 +3,7 @@ import { ReviewsWrapper } from "./styling/ReviewStyles";
 import Loading from "./Loading";
 import Review from "./Review";
 
-const Reviews = ({ reviews, tagName }) => {
+const Reviews = ({ reviews, tagName, user }) => {
   return (
     <ReviewsWrapper>
       {reviews ? (
@@ -11,7 +11,8 @@ const Reviews = ({ reviews, tagName }) => {
           {reviews.map(review => {
             return (
               <div key={review._id}>
-                <Review review={review} tagName={tagName} />
+                {/* {console.log("review", review)} */}
+                <Review review={review} tagName={tagName} user={user} />
               </div>
             );
           })}

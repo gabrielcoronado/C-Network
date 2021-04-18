@@ -1,15 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { UserContext } from "../providers/UserProvider";
 
 const NavBar = () => {
+  const { currentUser } = useContext(UserContext);
   return (
     <Wrapper>
       <StyledLink to="/">
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
-        <StyledLink to="/users/6075f0a52753174f496ff855">Feed</StyledLink>
+        {currentUser ? (
+          <StyledLink to={`/users/${currentUser._id}`}>Profile</StyledLink>
+        ) : null}
+        <StyledLink to="/feed">Feed</StyledLink>
         <StyledLink to="/login">Login</StyledLink>
       </Nav>
     </Wrapper>
