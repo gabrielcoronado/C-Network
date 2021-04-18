@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { UserContext } from "./providers/UserProvider";
 import styled from "styled-components";
 import profile from "../PaiMei.jpeg";
@@ -7,8 +7,34 @@ import Reviews from "./Reviews";
 
 const Profile = () => {
   const { currentUser } = useContext(UserContext);
+  const [feed, setFeed] = useState();
   const tagName = "@gab";
-  console.log("currentUser", currentUser);
+
+  useEffect(() => {
+    console.log("currentUser", currentUser);
+
+    //Including the currentUser to get a complete feed
+    if (currentUser && currentUser.following) {
+      console.log("IF CURRENT-USER");
+      const reviewersId = currentUser.following.concat([currentUser._id]);
+
+      fetch(
+        `http://localhost:4000/reviews?reviewersId=${reviewersId.join(",")}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json"
+          }
+        }
+      ).then(res =>
+        res.json().then(data => {
+          console.log("feed", data);
+          setFeed(data);
+        })
+      );
+    }
+  }, [currentUser]);
 
   return currentUser ? (
     <Wrapper>
@@ -30,10 +56,6 @@ const Profile = () => {
         </UserStats>
       </UserInfo>
       <Reviews currentUser={currentUser} tagName={tagName} />
-      {/* <div>seen: {currentUser.seen}</div> */}
-      {/* <div>blacklist: {currentUser.blacklist}</div> */}
-      {/* <div>following: {currentUser.following}</div> */}
-      {/* <div>followingObject: {currentUser.followingObject[0].name}</div> */}
     </Wrapper>
   ) : (
     <Loading />

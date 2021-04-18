@@ -1,16 +1,13 @@
 import React, { createContext, useEffect, useState } from "react";
-// import { useParams } from "react-router-dom";
 export const UserContext = createContext(null);
 
 export const UserProvider = ({ children }) => {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [currentUser, setCurrentUser] = useState({});
+  const [currentUser, setCurrentUser] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [path, setPath] = useState("");
-  //   const { id } = useParams();
-  // console.log("searchInput", searchInput);
 
-  //user http://localhost:3000/users/6075f0a52753174f496ff855
+  // console.log("searchInput", searchInput);
 
   useEffect(() => {
     fetch(`http://localhost:4000/users/6075f0a52753174f496ff855`, {
@@ -54,21 +51,6 @@ export const UserProvider = ({ children }) => {
     });
     const data = await res.json();
     console.log("seen", data);
-  };
-
-  const handleGetFeed = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${path}/blacklist`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("blacklisted", data);
   };
 
   return (

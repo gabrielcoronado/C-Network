@@ -10,7 +10,7 @@ const Reviews = ({ currentUser, tagName }) => {
     <ReviewsWrapper>
       {reviews ? (
         <div>
-          {console.log("reviewsObject", reviews)}
+          {/* {console.log("reviewsObject", reviews)} */}
           {reviews.map(review => {
             return (
               <Review key={review._id}>
@@ -19,9 +19,11 @@ const Reviews = ({ currentUser, tagName }) => {
                 </div>
                 <PostData>
                   <Tag>{tagName}</Tag>
-                  {console.log("review", review)}
-                  <Rating rating={review.rating} />
-                  {/* <Rating>Rating: {review.rating}</Rating> */}
+                  {/* {console.log("review", review)} */}
+                  <RatingWrapper>
+                    <Rating rating={review.rating} size={"small"} />
+                  </RatingWrapper>
+
                   <Comment>{review.comment}</Comment>
                 </PostData>
               </Review>
@@ -55,10 +57,9 @@ const Tag = styled.p`
   color: gray;
 `;
 
-// const Rating = styled.p`
-//   color: gray;
-//   font-size: 10px;
-// `;
+const RatingWrapper = styled.div`
+  /* height: 20px; */
+`;
 
 const Comment = styled.p`
   font-size: 15px;

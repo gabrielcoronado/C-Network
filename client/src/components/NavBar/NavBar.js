@@ -9,7 +9,7 @@ const NavBar = () => {
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
-        <StyledLink to="/users/6075f0a52753174f496ff855">Profile</StyledLink>
+        <StyledLink to="/users/6075f0a52753174f496ff855">Feed</StyledLink>
         <StyledLink to="/login">Login</StyledLink>
       </Nav>
     </Wrapper>

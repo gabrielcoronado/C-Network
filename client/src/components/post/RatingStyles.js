@@ -1,13 +1,14 @@
 import styled from "styled-components";
 
-export const Container = styled.div`
-  display: flex;
-  justify-content: center;
-  margin-top: 0;
-  align-items: center;
-  min-height: 15vh;
-  font-size: 30px;
-`;
+// export const Container = styled.div`
+//   display: flex;
+//   justify-content: center;
+//   margin-top: 0;
+//   align-items: center;
+//   height: 10vh;
+//   font-size: 30px;
+// `;
+
 export const Radio = styled.input`
   display: none;
 `;

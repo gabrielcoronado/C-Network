@@ -2,9 +2,18 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { Container, Radio, Rating } from "./RatingStyles";
 
-const Rate = ({ handleClick, rating }) => {
+const Rate = ({ handleClick, rating, size }) => {
+  const bigStar = {
+    justifyContent: "center",
+    aligItems: "center",
+    fontSize: size === "small" ? "15px" : "30px",
+    display: "flex",
+    height: "10vh",
+    marginTop: 0
+  };
+
   return (
-    <Container>
+    <div className="container" style={bigStar}>
       {[...Array(5)].map((item, index) => {
         const givenRating = index + 1;
         return (
@@ -36,7 +45,7 @@ const Rate = ({ handleClick, rating }) => {
           </label>
         );
       })}
-    </Container>
+    </div>
   );
 };
 
