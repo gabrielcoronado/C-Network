@@ -1,27 +1,30 @@
 import React, { useState, useEffect, useContext } from "react";
-import UserContext from "./providers/UserProvider";
+import { UserContext } from "./providers/UserProvider";
 import { GoPrimitiveDot } from "react-icons/go";
-import { useParams } from "react-router-dom";
 import { GiRoundStar } from "react-icons/gi";
+import { useParams } from "react-router-dom";
 import { ImBlocked } from "react-icons/im";
+import { withRouter } from "react-router";
 import { FaRegEye } from "react-icons/fa";
 import styled from "styled-components";
 import Loading from "./Loading";
 import Post from "./post/Post";
 
 const Movie = () => {
-  const [currentUser, setCurrentUser] = useState();
-  // const { currentUser } = useContext(UserContext);
-  console.log("Movie CurrentUser", currentUser);
   const [singleMovie, setSingleMovie] = useState();
-  const [blackisted, setBlacklisted] = useState();
-  const [seen, setSeen] = useState();
+  const [hidden, setHidden] = useState(true);
+  const { id } = useParams();
+  // const {
+  //   params: { id }
+  // } = match;
+  const { currentUser, handleSeen, handleBlacklist, setPath } = useContext(
+    UserContext
+  );
+  console.log("Movie CurrentUser", currentUser);
 
   const base_url = `https://image.tmdb.org`;
-  const backdropSize = `/t/p/original`;
+  // const backdropSize = `/t/p/original`;
   const posterSize = `/t/p/w500`;
-
-  const { id } = useParams();
 
   const time_converter = num => {
     let hours = Math.floor(num / 60);
@@ -30,97 +33,37 @@ const Movie = () => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/users/6075f0a52753174f496ff855`, {
+    setPath(id);
+  }, [id]);
+
+  useEffect(() => {
+    fetch(`http://localhost:4000/movies/${id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       }
     }).then(res =>
       res.json().then(data => {
-        console.log("user", data.data[0]);
-        setCurrentUser(data.data[0]);
+        // console.log("movie", data.data);
+        setSingleMovie(data.data);
       })
     );
   }, []);
-
-  useEffect(() => {
-    if (id) {
-      fetch(`http://localhost:4000/movies/${id}`, {
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
-      }).then(res =>
-        res.json().then(data => {
-          // console.log("movie", data.data);
-          setSingleMovie(data.data);
-        })
-      );
-    }
-  }, [id]);
-
-  const handleBlacklist = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/blacklist`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("blacklisted", data);
-  };
-
-  const handleSeen = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/seen`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
-  const postAReview = async () => {
-    const res = await fetch(`http://localhost:4000/reviews`, {
-      method: "POST",
-      body: JSON.stringify({
-        currentUser,
-        // comment,
-        // rating,
-        id
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
 
   return singleMovie ? (
     <Wrapper>
       <MovieWrapper
         styles={{
-          backgroundImage: `url(${base_url +
-            backdropSize +
-            singleMovie.backdrop_path})`,
+          backgroundImage: `url(
+          http://www.themoviedb.org/t/p/w1920_and_h800_multi_faces${singleMovie.backdrop_path}
+       )`,
           backgroundSize: "cover"
         }}
       >
-        {/* <img src={base_url + backdropSize + singleMovie.backdrop_path} /> */}
         <Poster src={base_url + posterSize + singleMovie.poster_path} />
         <MovieInfo>
           <H1>{singleMovie.title}</H1>
+          {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}
           <Details>
             <div>{singleMovie.release_date}</div>
             <Lang>({singleMovie.original_language.toUpperCase()})</Lang>
@@ -136,7 +79,8 @@ const Movie = () => {
             <GoPrimitiveDot size={11} />
             <Runtime>{time_converter(singleMovie.runtime)}</Runtime>
           </Details>
-          <Button>
+          {/* UP UNTIL HERE */}
+          <Button onClick={() => setHidden(!hidden)}>
             <GiRoundStar size={20} />
           </Button>
           <Button onClick={() => handleSeen()}>
@@ -152,7 +96,7 @@ const Movie = () => {
           <Overview>{singleMovie.overview}</Overview>
         </MovieInfo>
       </MovieWrapper>
-      <Post />
+      <Post hidden={hidden} currentUser={currentUser} id={id} />
     </Wrapper>
   ) : (
     <Loading />
@@ -161,9 +105,16 @@ const Movie = () => {
 
 const Wrapper = styled.div`
   justify-content: center;
+  margin: 0 auto;
   padding: 40px 60px;
-  max-width: 1400px;
-  /* display: flex; */
+  max-width: 1300px;
+  /* background: transparent; */
+  width: 100%;
+  /* border-bottom: 1px solid black; */
+  background-position: right -200px top;
+  background-size: cover;
+  background-repeat: no-repeat;
+  /* background-image: url(https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/uQtqiAu2bBlokqjlURVLEha6zoi.jpg); */
 `;
 
 const Poster = styled.img`
@@ -172,9 +123,9 @@ const Poster = styled.img`
 `;
 
 const MovieWrapper = styled.div`
-  padding: 0 40px;
-  z-index: 99999;
+  /* padding: 0 40px; */
   display: flex;
+  /* background: transparent; */
   width: 100%;
   opacity: 1;
 `;
@@ -190,7 +141,8 @@ const Tagline = styled.div`
 `;
 
 const Button = styled.button`
-  background-color: #032541;
+  /* background-color: #032541; */
+  background-color: transparent;
   border-radius: 50%;
   cursor: pointer;
   outline: none;
@@ -199,6 +151,10 @@ const Button = styled.button`
   border: none;
   margin: 15px;
   width: 47px;
+
+  &:active {
+
+  }
 `;
 
 const Lang = styled.div`
@@ -223,13 +179,13 @@ const MovieInfo = styled.div`
 `;
 
 const Genre = styled.div`
-  display: flex;
-  padding-left: 5px;
   padding-right: 5px;
+  padding-left: 5px;
+  display: flex;
 `;
 
 const Runtime = styled.div`
   padding-left: 5px;
 `;
 
-export default Movie;
+export default withRouter(Movie);

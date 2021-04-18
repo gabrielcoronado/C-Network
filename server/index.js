@@ -47,7 +47,7 @@ express()
   .put(`/users/:id/unfollow`, unfollowUser)
 
   //See all post from user
-  .get(`/users/:id/reviews`, getReviewsByUser)
+  .get(`/reviews`, getReviewsByUser)
 
   // Get user data
   .get(`/users/:id`, getUser)

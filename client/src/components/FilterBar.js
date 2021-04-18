@@ -27,9 +27,7 @@ const FilterBar = () => {
 
   return genres ? (
     <FilterWrapper>
-      <h2>Filters</h2>
       <Genres>
-        <h3>Genres</h3>
         {genres.map(genre => {
           return (
             <Button key={genre.id} onClick={() => toggleActive()}>
@@ -46,20 +44,34 @@ const FilterBar = () => {
 
 const FilterWrapper = styled.div`
   margin: 0 40px;
-  width: 300px;
+  /* width: 300px; */
+  width: 95vw;
+  display: flex;
+  margin: 40px auto 0 auto;
+  overflow: overlay;
+  flex-direction: row;
+  overflow-x: auto;
+  overflow-y: auto;
+  border-radius: 20px;
+  margin-bottom: 20px;
+  font-size: 15px;
 `;
 
 const Genres = styled.div`
   padding: 10px;
-  border-radius: 10px;
-  border: 2px solid white;
+  display: flex;
 `;
 
-const Button = styled.button`
-  padding: 10px;
-  border-radius: 15px;
+const Button = styled.span`
+  padding: 5px 9px;
+  border-radius: 30px;
+  align-self: center;
+  white-space: nowrap;
+  font-size: 15px;
+  color: grey;
+
   margin: 5px;
-  border: 2px solid white;
+  border: 0.5px solid grey;
   list-style-type: none;
   cursor: pointer;
   outline: none;
@@ -67,9 +79,14 @@ const Button = styled.button`
 
   :hover,
   :active {
-    background: cyan;
-    color: black;
-    border: 2px solid cyan;
+    background: linear-gradient(
+      90deg,
+      rgb(253, 36, 29) 5%,
+      rgb(255, 128, 55) 100%
+    );
+    color: whitesmoke;
+    outline: 0.5px solid
+      linear-gradient(90deg, rgb(253, 36, 29) 5%, rgb(255, 128, 55) 100%);
   }
 `;
 

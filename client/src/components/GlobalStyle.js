@@ -12,7 +12,7 @@ input {
   padding: 0;
   border: 0;
   color: white;
-  max-width: 1500px;
+  /* background: transparent; */
   background: #131516;
   vertical-align: baseline;
   font-family: Kiwi Maru, serif;
