@@ -94,8 +94,8 @@ const getMovieByQuery = async (req, res) => {
 const getReviewsByUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
-    const { reviewers } = req.body;
-
+    const { reviewersId } = req.query;
+    console.log("query", req.query);
     //aggregate lets us use the lookup which allows us to match/import data from other collections
     const result = await db
       .collection("reviews")
@@ -108,14 +108,15 @@ const getReviewsByUser = async (req, res) => {
             as: "reviewer"
           }
         },
-        // { $match : { $in: reviewers } } ]
-
         {
           $match: {
-            reviewerId: { $in: reviewers.map(reviewer => ObjectID(reviewer)) }
+            reviewerId: {
+              $in: reviewersId.split(",").map(reviewer => ObjectID(reviewer))
+            }
           }
         }
       ])
+      .sort({ createdAt: -1 })
       .toArray();
 
     handleResult(client, result, req.body, res);
@@ -135,7 +136,7 @@ const newReview = async (req, res) => {
       reviewerId: ObjectID(currentUser._id),
       comment,
       rating,
-      createdAt: new Date().toUTCString()
+      createdAt: new Date()
     });
     assert.equal(1, result.insertedCount);
 

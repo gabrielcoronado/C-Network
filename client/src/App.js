@@ -1,6 +1,6 @@
 import Movie from "./components/Movie";
 import styled from "styled-components";
-import Profile from "./components/Profile";
+import Feed from "./components/Feed";
 import Homepage from "./components/Homepage";
 import Login from "./components/NavBar/login";
 import NavBar from "./components/NavBar/NavBar";
@@ -26,7 +26,7 @@ function App() {
               <Login />
             </Route>
             <Route exact path="/users/6075f0a52753174f496ff855">
-              <Profile />
+              <Feed />
             </Route>
             <Route exact path="/movies">
               <MovieResults />

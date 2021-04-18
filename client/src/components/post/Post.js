@@ -1,11 +1,9 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
+import { PostWrapper, CommentBox, Button } from "../styling/PostStyles";
 import Rating from "./Rating";
-import styled from "styled-components";
-import { UserContext } from "../providers/UserProvider";
 
 const Post = ({ currentUser, id, hidden }) => {
   const [rating, setRating] = useState(0);
-  // const { rating, setRating } = useContext(UserContext);
   const [comment, setComment] = useState("");
   console.log("comment", comment);
 
@@ -14,7 +12,7 @@ const Post = ({ currentUser, id, hidden }) => {
   };
 
   const handleClick = givenRating => {
-      setRating(givenRating);
+    setRating(givenRating);
   };
 
   const postAReview = async () => {
@@ -37,7 +35,7 @@ const Post = ({ currentUser, id, hidden }) => {
 
   return !hidden ? (
     <PostWrapper>
-      <Rating handleClick={handleClick} rating={rating}/>
+      <Rating handleClick={handleClick} rating={rating} />
       <CommentBox
         id="commentBox"
         onChange={handleComment}
@@ -48,37 +46,5 @@ const Post = ({ currentUser, id, hidden }) => {
     </PostWrapper>
   ) : null;
 };
-
-const PostWrapper = styled.div`
-  flex-direction: column;
-  padding-bottom: 30px;
-  align-items: center;
-  margin-top: 100px;
-  display: flex;
-`;
-
-const CommentBox = styled.textarea`
-  border-radius: 10px;
-  padding: 10px 20px;
-  align-self: center;
-  background: white;
-  font-size: 17px;
-  outline: none;
-  border: none;
-  color: black;
-  height: 20vh;
-  width: 40vw;
-`;
-
-const Button = styled.button`
-  background: #032541;
-  border-radius: 10px;
-  margin-top: 15px;
-  font-size: 15px;
-  outline: none;
-  border: none;
-  width: 150px;
-  height: 50px;
-`;
 
 export default Post;
