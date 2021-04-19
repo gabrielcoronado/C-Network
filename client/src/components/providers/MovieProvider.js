@@ -15,7 +15,6 @@ export const MovieProvider = ({ children }) => {
       }
     }).then(res =>
       res.json().then(data => {
-        console.log("Data", data.data);
         setDailyTrends(data.data.results);
       })
     );
@@ -30,7 +29,6 @@ export const MovieProvider = ({ children }) => {
       }
     }).then(res =>
       res.json().then(data => {
-        console.log("Data", data.data.results);
         setWeeklyTrends(data.data.results);
       })
     );

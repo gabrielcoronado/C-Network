@@ -18,7 +18,8 @@ const {
   getRandomMovie,
   createNewUser,
   unfollowUser,
-  getUser
+  getUserData,
+  createUser
 } = require("./handlers");
 
 const PORT = 4000;
@@ -50,7 +51,7 @@ express()
   .get(`/reviews`, getReviewsByUser)
 
   // Get user data
-  .get(`/users/:id`, getUser)
+  .get(`/users/:id`, getUserData)
 
   // .get(`/movies/search`)
 
@@ -63,6 +64,11 @@ express()
 
   //Create a new user
   .post(`/users`, createNewUser)
+
+  ///////FIREBASE///////
+  .post("/login/users", createUser)
+
+  //////////FIREBASE///////
 
   //   .get(`/movies/randomsearch`, getRandomMovie)
 

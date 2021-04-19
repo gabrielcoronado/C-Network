@@ -6,7 +6,7 @@ export const Wrapper = styled.div`
   display: flex;
 `;
 
-export const UserInfo = styled.div``;
+export const User = styled.div``;
 
 export const UserStats = styled.div`
   display: flex;

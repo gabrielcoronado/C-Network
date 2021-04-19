@@ -6,32 +6,29 @@ import FilterBar from "./FilterBar";
 import Loading from "./Loading";
 import SearchBar from "./SearchBar";
 import {
+  Card,
+  Title,
+  ReleaseDate,
+  Poster,
   Div,
   BarDiv,
   CardWrapper,
-  Card,
-  Wrapper,
-  Title,
-  ReleaseDate,
-  Poster
+  Wrapper
 } from "./styling/MovieResultsStyles";
 
 const MovieResults = () => {
+  const [movies, setMovies] = useState();
+  const { dailyTrends } = useContext(MovieContext);
   const [isShowingTrends, setIsShowingTrends] = useState(false);
   const { searchInput, searchSubmitted, setSearchSubmitted } = useContext(
     UserContext
   );
-  // console.log("searchSubmitted", searchSubmitted);
-  const { dailyTrends } = useContext(MovieContext);
-
-  const [movies, setMovies] = useState();
+  const history = useHistory();
   const base_url = `https://image.tmdb.org`;
   const posterSize = `/t/p/w500`;
-  const history = useHistory();
 
   useEffect(() => {
     if (searchInput && searchSubmitted) {
-      console.log("IF");
       fetch(`http://localhost:4000/movies/movie/${searchInput}`, {
         headers: {
           "Content-Type": "application/json",
@@ -62,10 +59,7 @@ const MovieResults = () => {
   };
 
   useEffect(() => {
-    console.log("Movie DailyTrends OUTSIDE IF");
-
     if (!searchInput && !searchSubmitted) {
-      console.log("Movie DailyTrends INSIDE IF");
       setIsShowingTrends(true);
       setMovies(dailyTrends);
     }

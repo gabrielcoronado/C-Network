@@ -5,7 +5,6 @@ import Rating from "./Rating";
 const Post = ({ currentUser, id, hidden }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-  console.log("comment", comment);
 
   const handleComment = ev => {
     setComment(ev.target.value.toLowerCase());
@@ -42,7 +41,15 @@ const Post = ({ currentUser, id, hidden }) => {
         type="text"
         placeholder="write your review!"
       />
-      <Button onClick={() => postAReview()}>Post Review</Button>
+      <Button
+        disabled={comment === "" || rating === 0}
+        style={{
+          background: comment === "" || rating === 0 ? "gray" : null
+        }}
+        onClick={() => postAReview()}
+      >
+        Post Review
+      </Button>
     </PostWrapper>
   ) : null;
 };

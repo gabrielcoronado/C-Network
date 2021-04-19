@@ -27,13 +27,8 @@ const Movie = () => {
   const [movie, setMovie] = useState();
   const [hidden, setHidden] = useState(true);
   const { id } = useParams();
-  // const {
-  //   params: { id }
-  // } = match;
-  const { currentUser, handleSeen, handleBlacklist, setPath } = useContext(
-    UserContext
-  );
-  console.log("Movie CurrentUser", currentUser);
+
+  const { currentUser, handleSeen, handleBlacklist } = useContext(UserContext);
 
   const base_url = `https://image.tmdb.org`;
   // const backdropSize = `/t/p/original`;

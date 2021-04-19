@@ -17,7 +17,6 @@ export const UserProvider = ({ children }) => {
       }
     }).then(res =>
       res.json().then(data => {
-        console.log("user", data.data[0]);
         setCurrentUser(data.data[0]);
       })
     );

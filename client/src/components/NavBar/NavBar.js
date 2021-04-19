@@ -1,16 +1,34 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
+import { UserContext } from "../providers/UserProvider";
+import { AppContext } from "../providers/AppProvider";
+import Avatar from "./Avatar";
 
 const NavBar = () => {
+  const { currentUser } = useContext(UserContext);
+  const { appUser, signInWithGoogle, handleSignOut } = useContext(AppContext);
+
   return (
     <Wrapper>
       <StyledLink to="/">
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
-        <StyledLink to="/users/6075f0a52753174f496ff855">Feed</StyledLink>
-        <StyledLink to="/login">Login</StyledLink>
+        {currentUser ? (
+          <StyledLink to={`/users/${currentUser._id}`}>Profile</StyledLink>
+        ) : null}
+        <StyledLink to="/feed">Feed</StyledLink>
+        <>
+          {appUser && appUser.photoURL ? (
+            <>
+              <Avatar src={appUser.photoURL} />
+              <StyledButton onClick={handleSignOut}>Logout</StyledButton>
+            </>
+          ) : (
+            <StyledButton onClick={signInWithGoogle}>Login</StyledButton>
+          )}
+        </>
       </Nav>
     </Wrapper>
   );
@@ -25,6 +43,14 @@ const Wrapper = styled.header`
 `;
 
 const StyledLink = styled(Link)`
+  text-decoration: none;
+  margin-left: 15px;
+  font-size: 16px;
+  display: flex;
+  color: white;
+`;
+
+const StyledButton = styled.button`
   text-decoration: none;
   margin-left: 15px;
   font-size: 16px;

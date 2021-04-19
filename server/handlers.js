@@ -1,3 +1,4 @@
+const admin = require("firebase-admin");
 const fetch = require("node-fetch");
 require("dotenv").config();
 const key = process.env.REACT_APP_TMDB_KEY;
@@ -10,6 +11,72 @@ const options = {
   useUnifiedTopology: true
 };
 
+/////////////////////    FIREBASE    //////////////////////
+
+admin.initializeApp({
+  credential: admin.credential.cert({
+    type: "service_account",
+    project_id: process.env.FIREBASE_PROJECT_ID,
+    private_key_id: process.env.FIREBASE_PRIVATE_KEY_ID,
+    private_key: process.env.FIREBASE_PRIVATE_KEY.replace(/\\n/g, "\n"),
+    client_email: process.env.FIREBASE_CLIENT_EMAIL,
+    client_id: process.env.FIREBASE_CLIENT_ID,
+    auth_uri: "https://accounts.google.com/o/oauth2/auth",
+    token_uri: "https://oauth2.googleapis.com/token",
+    auth_provider_x509_cert_url: "https://www.googleapis.com/oauth2/v1/certs",
+    client_x509_cert_url: process.env.FIREBASE_CLIENT_CERT
+  }),
+  databaseURL: process.env.FB_DATABASE_URL
+});
+const db = admin.database();
+
+const queryDatabase = async key => {
+  const ref = db.ref(key);
+  let data;
+  await ref.once(
+    "value",
+    snapshot => {
+      data = snapshot.val();
+    },
+    err => {
+      console.log(err);
+    }
+  );
+
+  return data;
+};
+
+const getUser = async email => {
+  const data = (await queryDatabase(`appUsers`)) || {};
+  const dataValue = Object.keys(data)
+    .map(item => data[item])
+    .find(obj => obj.email === email);
+
+  return dataValue || false;
+};
+
+const createUser = async (req, res) => {
+  const returningUser = await getUser(req.body.email);
+  console.log(returningUser);
+  if (returningUser) {
+    res
+      .status(200)
+      .json({ status: 200, data: req.body, message: "returning user" });
+    return;
+  } else {
+    const appUsersRef = db.ref("appUsers");
+    appUsersRef.push(req.body).then(() => {
+      res.status(200).json({
+        status: 200,
+        data: req.body,
+        message: "new user"
+      });
+    });
+  }
+};
+////////////////////////////////////////////////////////////
+
+//////////////   CONNECTING TO MONGO DB    /////////////////
 const dbConnect = async () => {
   const client = await MongoClient(MONGO_URI, options);
   await client.connect();
@@ -18,6 +85,8 @@ const dbConnect = async () => {
 
   return { client, db };
 };
+
+/// MOVIE RESPONSES TO SHORTEN REPETIVIVE LINES OF CODE ///
 
 const handleResult = (client, result, data, res) => {
   if (result) {
@@ -35,8 +104,10 @@ const handleMovieDbResponse = (data, res) => {
     ? res.status(200).json({ status: 200, data: data })
     : res.status(400).json({ status: 400, message: "no data" });
 };
+//////////////////////////////////////////////////////////
 
-//Daily Trends
+/// GET DAILY TRENDS ///
+
 const dailyTrend = async (req, res) => {
   const api_url = `https://api.themoviedb.org/3/trending/movie/day?api_key=${key}`;
   const fetch_response = await fetch(api_url);
@@ -45,7 +116,8 @@ const dailyTrend = async (req, res) => {
   handleMovieDbResponse(data, res);
 };
 
-// Weekly Trends
+/// GET WEEKLY TRENDS ///
+
 const weeklyTrend = async (req, res) => {
   const api_url = `https://api.themoviedb.org/3/trending/movie/week?api_key=${key}`;
   const fetch_response = await fetch(api_url);
@@ -54,7 +126,8 @@ const weeklyTrend = async (req, res) => {
   handleMovieDbResponse(data, res);
 };
 
-//Get all genres
+/// GET ALL GENRES ///
+
 const getAllGenres = async (req, res) => {
   const api_url = `https://api.themoviedb.org/3/genre/movie/list?api_key=${key}&language=en-US`;
   const fetch_response = await fetch(api_url);
@@ -63,9 +136,11 @@ const getAllGenres = async (req, res) => {
   handleMovieDbResponse(data, res);
 };
 
-//Fetching data for a single Movie.
+//GET INFORMATION OF A SINGLE MOVIE ///
+
 const getSingleMoviebyId = async (req, res) => {
   const { id } = req.params;
+  console.log("id", id);
   const api_url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
   const fetch_response = await fetch(api_url);
   const data = await fetch_response.json();
@@ -74,6 +149,7 @@ const getSingleMoviebyId = async (req, res) => {
 };
 
 //To Do
+
 const getMovieByQuery = async (req, res) => {
   try {
     const { query } = req.params;
@@ -90,7 +166,8 @@ const getMovieByQuery = async (req, res) => {
   }
 };
 
-//Get reviews by user
+//GET ALL REVIEWS BY USER ///
+
 const getReviewsByUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
@@ -125,6 +202,8 @@ const getReviewsByUser = async (req, res) => {
   }
 };
 
+/// CREATE A NEW POST ///
+
 const newReview = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
@@ -155,6 +234,8 @@ const newReview = async (req, res) => {
   }
 };
 
+/// CREATE A USER DB ///
+
 const createNewUser = async (req, res) => {
   const { client, db } = await dbConnect();
 
@@ -169,6 +250,8 @@ const createNewUser = async (req, res) => {
 
   handleResult(client, result, req.body, res);
 };
+
+/// FOLLOW USER ///
 
 const followUser = async (req, res) => {
   const { client, db } = await dbConnect();
@@ -187,6 +270,8 @@ const followUser = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
+/// UNFOLLOW USER ///
+
 const unfollowUser = async (req, res) => {
   const { client, db } = await dbConnect();
 
@@ -203,6 +288,8 @@ const unfollowUser = async (req, res) => {
 
   handleResult(client, result, req.body, res);
 };
+
+/// BLACKLIST A MOVIE ///
 
 const blacklistMovie = async (req, res) => {
   const { client, db } = await dbConnect();
@@ -222,6 +309,8 @@ const blacklistMovie = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
+/// MARK A MOVIE AS SEEN ///
+
 const markMovieAsSeen = async (req, res) => {
   const { client, db } = await dbConnect();
 
@@ -239,7 +328,9 @@ const markMovieAsSeen = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
-const getUser = async (req, res) => {
+/// GET USER DATA ///
+
+const getUserData = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
     const userId = req.params.id;
@@ -283,9 +374,10 @@ module.exports = {
   createNewUser,
   followUser,
   unfollowUser,
-  getUser,
+  getUserData,
   blacklistMovie,
   markMovieAsSeen,
   getAllGenres,
-  getMovieByQuery
+  getMovieByQuery,
+  createUser
 };
