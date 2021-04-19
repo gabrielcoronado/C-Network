@@ -66,7 +66,7 @@ express()
   .post(`/users`, createNewUser)
 
   ///////FIREBASE///////
-  .post("/login/users", createUser)
+  .post("/login", createUser)
 
   //////////FIREBASE///////
 
