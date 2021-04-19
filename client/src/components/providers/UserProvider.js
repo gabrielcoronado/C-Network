@@ -1,26 +1,63 @@
 import React, { createContext, useEffect, useState } from "react";
+import withFirebaseAuth from "react-with-firebase-auth";
+import firebase from "firebase/app";
+import "firebase/auth";
+
 export const UserContext = createContext(null);
 
-export const UserProvider = ({ children }) => {
+var firebaseConfig = {
+  apiKey: "AIzaSyAopvg1mEkhrSBFul49i8xiEyVgDpMuE60",
+  authDomain: "c-network-e52f3.firebaseapp.com",
+  projectId: "c-network-e52f3",
+  storageBucket: "c-network-e52f3.appspot.com",
+  messagingSenderId: "491793447664",
+  appId: "1:491793447664:web:2b1c12ccecfeb647c6e035"
+};
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const firebaseAppAuth = firebaseApp.auth();
+const providers = {
+  googleProvider: new firebase.auth.GoogleAuthProvider()
+};
+
+const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [currentUser, setCurrentUser] = useState(null);
   const [searchInput, setSearchInput] = useState("");
   const [path, setPath] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [appUser, setAppUser] = useState({});
+  const [message, setMessage] = useState("");
 
-  // console.log("searchInput", searchInput);
+  const handleSignOut = () => {
+    signOut();
+    setAppUser({});
+  };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/users/6075f0a52753174f496ff855`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    }).then(res =>
-      res.json().then(data => {
-        setCurrentUser(data.data[0]);
+    if (user) {
+      fetch(`http://localhost:4000/login`, {
+        method: "post",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          displayName: user.displayName,
+          email: user.email,
+          photoURL: user.photoURL
+        })
       })
-    );
-  }, []);
+        .then(res => {
+          console.log("RES", res);
+          return res.json();
+        })
+        .then(json => {
+          setAppUser(json.data);
+          setCurrentUser(json.data);
+          console.log("JSON", json.data);
+          setMessage(json.message);
+        });
+    }
+  }, [user]);
 
   const handleBlacklist = async () => {
     const res = await fetch(`http://localhost:4000/movies/${path}/blacklist`, {
@@ -56,13 +93,17 @@ export const UserProvider = ({ children }) => {
     <UserContext.Provider
       value={{
         searchSubmitted,
-        currentUser,
         searchInput,
         setSearchInput,
         setSearchSubmitted,
         handleSeen,
         handleBlacklist,
-        setPath
+        setPath,
+        signInWithGoogle,
+        appUser,
+        handleSignOut,
+        message,
+        currentUser
       }}
     >
       {children}
@@ -70,4 +111,7 @@ export const UserProvider = ({ children }) => {
   );
 };
 
-export default UserProvider;
+export default withFirebaseAuth({
+  providers,
+  firebaseAppAuth
+})(UserProvider);

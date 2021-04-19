@@ -1,10 +1,10 @@
 import React, { useContext } from "react";
 import styled from "styled-components";
-import { AppContext } from "../providers/AppProvider";
+import { UserContext } from "../providers/UserProvider";
 import Avatar from "./Avatar";
 
 const Login = () => {
-  const { appUser, signInWithGoogle } = useContext(AppContext);
+  const { appUser, signInWithGoogle } = useContext(UserContext);
   console.log("appUser", appUser);
 
   return (
