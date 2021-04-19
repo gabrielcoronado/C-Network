@@ -17,7 +17,7 @@ import {
   Date
 } from "./styling/ReviewStyles";
 
-const Review = ({ review, user }) => {
+const Review = ({ review }) => {
   const history = useHistory();
   const [movie, setMovie] = useState();
   const base_url = `https://image.tmdb.org`;
@@ -36,6 +36,7 @@ const Review = ({ review, user }) => {
       }
     }).then(res =>
       res.json().then(data => {
+        // console.log("data", data);
         setMovie(data.data);
       })
     );
@@ -49,7 +50,6 @@ const Review = ({ review, user }) => {
       </div>
       <PostData>
         <Title>{movie.title}</Title>
-
         <Date>{date}</Date>
         <RatingWrapper>
           <Rating rating={review.rating} size={"small"} />

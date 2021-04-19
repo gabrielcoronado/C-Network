@@ -5,7 +5,7 @@ import App from "./App";
 // import { Provider } from "react-redux";
 import { MovieProvider } from "./components/providers/MovieProvider";
 import { UserProvider } from "./components/providers/UserProvider";
-import { AppProvider } from "./components/providers/AppProvider";
+import AppProvider from "./components/providers/AppProvider";
 // const store = createStore(
 //   movieReducer,
 //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()

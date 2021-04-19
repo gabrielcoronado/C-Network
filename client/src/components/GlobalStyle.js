@@ -12,14 +12,22 @@ input {
   padding: 0;
   border: 0;
   color: white;
-  /* background: transparent; */
   background: #131516;
   vertical-align: baseline;
   font-family: Kiwi Maru, serif;
 }
 
+*::-webkit-scrollbar {
+  width: 15px;
+}
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-
+*::-webkit-scrollbar-thumb {
+  background-color: gray;
+  border-radius: 20px;
+}
 /* .App {
   text-align: center;
 }
