@@ -413,6 +413,68 @@ const getUserData = async (req, res) => {
   }
 };
 
+const searchUsers = async (req, res) => {
+  try {
+    const { client, db } = await dbConnect();
+
+    const { name } = req.query;
+
+    const regex = new RegExp(name, "i");
+    const result = await db
+      .collection("users")
+      .find({ name: { $regex: regex } })
+      .toArray();
+
+    const users = result.map(user => {
+      return {
+        name: user.name,
+        photoURL: user.photoURL,
+        reviewsCount: user.reviews && user.reviews.length
+      };
+    });
+
+    handleResult(client, users, req.query, res);
+
+    console.log("search result", result);
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
+const getUserRanking = async (req, res) => {
+  try {
+    const { client, db } = await dbConnect();
+
+    const result = await db
+      .collection("users")
+      .find()
+      .toArray();
+
+    const users = result.map(user => {
+      return {
+        name: user.name,
+        photoURL: user.photoURL,
+        reviewsCount: user.reviews && user.reviews.length
+      };
+    });
+
+    const userRanking = users.sort((user1, user2) => {
+      if (user1.reviewsCount < user2.reviewsCount) {
+        return 1;
+      } else if (user1.reviewsCount > user2.reviewsCount) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    console.log("userRanking", userRanking);
+
+    handleResult(client, userRanking, req.query, res);
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
 module.exports = {
   dailyTrend,
   getSingleMoviebyId,
@@ -427,5 +489,7 @@ module.exports = {
   markMovieAsSeen,
   getAllGenres,
   getMovieByQuery,
-  createUser
+  createUser,
+  searchUsers,
+  getUserRanking
 };
