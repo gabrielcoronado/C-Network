@@ -2,12 +2,12 @@ import React, { useContext } from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
-import { AppContext } from "../providers/AppProvider";
 import Avatar from "./Avatar";
 
 const NavBar = () => {
-  const { currentUser } = useContext(UserContext);
-  const { appUser, signInWithGoogle, handleSignOut } = useContext(AppContext);
+  const { currentUser, appUser, signInWithGoogle, handleSignOut } = useContext(
+    UserContext
+  );
 
   return (
     <Wrapper>
@@ -20,9 +20,9 @@ const NavBar = () => {
         ) : null}
         <StyledLink to="/feed">Feed</StyledLink>
         <>
-          {appUser && appUser.photoURL ? (
+          {appUser && appUser.email ? (
             <>
-              <Avatar src={appUser.photoURL} />
+              {appUser.photoURL ? <Avatar src={appUser.photoURL} /> : null}
               <StyledButton onClick={handleSignOut}>Logout</StyledButton>
             </>
           ) : (

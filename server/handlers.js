@@ -58,17 +58,22 @@ const getUser = async email => {
 const createUser = async (req, res) => {
   const returningUser = await getUser(req.body.email);
   console.log(returningUser);
+
   if (returningUser) {
+    const user = await getUserFromDB({ email: req.body.email });
     res
       .status(200)
-      .json({ status: 200, data: req.body, message: "returning user" });
+      .json({ status: 200, data: user, message: "returning user" });
     return;
   } else {
     const appUsersRef = db.ref("appUsers");
-    appUsersRef.push(req.body).then(() => {
+
+    appUsersRef.push(req.body).then(async () => {
+      const user = await createNewUser(req.body);
+
       res.status(200).json({
         status: 200,
-        data: req.body,
+        data: user,
         message: "new user"
       });
     });
@@ -105,6 +110,55 @@ const handleMovieDbResponse = (data, res) => {
     : res.status(400).json({ status: 400, message: "no data" });
 };
 //////////////////////////////////////////////////////////
+
+const getUserFromDB = async ({ email, userId }) => {
+  if (!email && !userId) {
+    return null;
+  }
+  try {
+    const { client, db } = await dbConnect();
+
+    const match = email ? { email } : { _id: ObjectID(userId) };
+
+    console.log("email", email);
+    //aggregate lets us use the lookup which allows us to match/import data from other collections
+    const result = await db
+      .collection("users")
+      .aggregate([
+        {
+          $lookup: {
+            from: "users",
+            localField: "following",
+            foreignField: "_id",
+            as: "followingObject"
+          }
+        },
+        {
+          $lookup: {
+            from: "reviews",
+            localField: "reviews",
+            foreignField: "_id",
+            as: "reviewsObject"
+          }
+        },
+        { $match: match }
+      ])
+      .toArray();
+    console.log("result", result);
+
+    client.close();
+    console.log("Disconnected!");
+
+    if (result) {
+      console.log("result", result);
+      return result[0];
+    } else {
+      return null;
+    }
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
 
 /// GET DAILY TRENDS ///
 
@@ -236,19 +290,27 @@ const newReview = async (req, res) => {
 
 /// CREATE A USER DB ///
 
-const createNewUser = async (req, res) => {
+const createNewUser = async ({ email, displayName, photoURL }) => {
   const { client, db } = await dbConnect();
 
-  const { name } = req.body;
-
   const result = await db.collection("users").insertOne({
-    name: name,
+    name: displayName,
+    email,
+    photoURL,
     following: [],
     seen: [],
     blacklist: []
   });
 
-  handleResult(client, result, req.body, res);
+  client.close();
+  console.log("Disconnected!");
+
+  if (result) {
+    return result;
+  } else {
+    console.log("error in createNewUser", result);
+    return null;
+  }
 };
 
 /// FOLLOW USER ///
@@ -332,34 +394,82 @@ const markMovieAsSeen = async (req, res) => {
 
 const getUserData = async (req, res) => {
   try {
-    const { client, db } = await dbConnect();
     const userId = req.params.id;
-    console.log("userId", userId);
-    //aggregate lets us use the lookup which allows us to match/import data from other collections
+
+    const user = await getUserFromDB({ userId });
+    console.log("user", user);
+
+    if (user) {
+      res.status(201).json({ status: 201, data: user });
+    } else {
+      res.status(500).json({
+        status: 500,
+        data: { userId },
+        message: "Error while getting user data"
+      });
+    }
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
+const searchUsers = async (req, res) => {
+  try {
+    const { client, db } = await dbConnect();
+
+    const { name } = req.query;
+
+    const regex = new RegExp(name, "i");
     const result = await db
       .collection("users")
-      .aggregate([
-        {
-          $lookup: {
-            from: "users",
-            localField: "following",
-            foreignField: "_id",
-            as: "followingObject"
-          }
-        },
-        {
-          $lookup: {
-            from: "reviews",
-            localField: "reviews",
-            foreignField: "_id",
-            as: "reviewsObject"
-          }
-        },
-        { $match: { _id: ObjectID(userId) } }
-      ])
+      .find({ name: { $regex: regex } })
       .toArray();
-    console.log("result", result);
-    handleResult(client, result, req.body, res);
+
+    const users = result.map(user => {
+      return {
+        name: user.name,
+        photoURL: user.photoURL,
+        reviewsCount: user.reviews && user.reviews.length
+      };
+    });
+
+    handleResult(client, users, req.query, res);
+
+    console.log("search result", result);
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
+const getUserRanking = async (req, res) => {
+  try {
+    const { client, db } = await dbConnect();
+
+    const result = await db
+      .collection("users")
+      .find()
+      .toArray();
+
+    const users = result.map(user => {
+      return {
+        name: user.name,
+        photoURL: user.photoURL,
+        reviewsCount: user.reviews && user.reviews.length
+      };
+    });
+
+    const userRanking = users.sort((user1, user2) => {
+      if (user1.reviewsCount < user2.reviewsCount) {
+        return 1;
+      } else if (user1.reviewsCount > user2.reviewsCount) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    console.log("userRanking", userRanking);
+
+    handleResult(client, userRanking, req.query, res);
   } catch (err) {
     console.log(err.stack);
   }
@@ -379,5 +489,7 @@ module.exports = {
   markMovieAsSeen,
   getAllGenres,
   getMovieByQuery,
-  createUser
+  createUser,
+  searchUsers,
+  getUserRanking
 };

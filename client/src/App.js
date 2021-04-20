@@ -3,7 +3,7 @@ import Movie from "./components/Movie";
 import styled from "styled-components";
 import Profile from "./components/Profile";
 import Homepage from "./components/Homepage";
-import Login from "./components/NavBar/Login";
+// import Login from "./components/NavBar/Login";
 import NavBar from "./components/NavBar/NavBar";
 import RandomMovie from "./components/RandomMovie";
 import GlobalStyle from "./components/GlobalStyle";
@@ -23,9 +23,9 @@ function App() {
             <Route exact path="/">
               <Homepage />
             </Route>
-            <Route exact path="/login">
+            {/* <Route exact path="/login">
               <Login />
-            </Route>
+            </Route> */}
             <Route exact path="/users/:id">
               <Profile />
             </Route>

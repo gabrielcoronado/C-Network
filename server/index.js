@@ -19,7 +19,9 @@ const {
   createNewUser,
   unfollowUser,
   getUserData,
-  createUser
+  createUser,
+  searchUsers,
+  getUserRanking
 } = require("./handlers");
 
 const PORT = 4000;
@@ -50,6 +52,8 @@ express()
   //See all post from all user
   .get(`/reviews`, getReviewsByUser)
 
+  .get("/users/search", searchUsers)
+  .get(`/users/ranking`, getUserRanking)
   // Get user data
   .get(`/users/:id`, getUserData)
 
@@ -66,7 +70,7 @@ express()
   .post(`/users`, createNewUser)
 
   ///////FIREBASE///////
-  .post("/login/users", createUser)
+  .post("/login", createUser)
 
   //////////FIREBASE///////
 
