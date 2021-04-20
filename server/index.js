@@ -21,7 +21,8 @@ const {
   getUserData,
   createUser,
   searchUsers,
-  getUserRanking
+  getUserRanking,
+  getAllReviews
 } = require("./handlers");
 
 const PORT = 4000;
@@ -54,9 +55,10 @@ express()
 
   .get("/users/search", searchUsers)
   .get(`/users/ranking`, getUserRanking)
-  // Get user data
   .get(`/users/:id`, getUserData)
+  // Get user data
 
+  .get(`/feed`, getAllReviews)
   // .get(`/movies/search`)
 
   // .get(`/actors/search`)

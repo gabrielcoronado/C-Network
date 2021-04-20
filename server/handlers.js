@@ -226,6 +226,7 @@ const getReviewsByUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
     const { reviewersId } = req.query;
+
     console.log("query", req.query);
     //aggregate lets us use the lookup which allows us to match/import data from other collections
     const result = await db
@@ -452,6 +453,7 @@ const getUserRanking = async (req, res) => {
 
     const users = result.map(user => {
       return {
+        id: _id,
         name: user.name,
         photoURL: user.photoURL,
         reviewsCount: user.reviews && user.reviews.length
@@ -475,6 +477,43 @@ const getUserRanking = async (req, res) => {
   }
 };
 
+//////////////////// GET ALL USER REVIEWS ////////////////////
+
+const getAllReviews = async (req, res) => {
+  try {
+    const { client, db } = await dbConnect();
+
+    const result = await db
+      .collection("reviews")
+      .find()
+      .sort({ createdAt: -1 })
+      .toArray();
+
+    const reviews = result.map(user => {
+      return {
+        name: user.name,
+        photoURL: user.photoURL,
+        reviewsCount: user.reviews && user.reviews.length
+      };
+    });
+
+    const userRanking = users.sort((user1, user2) => {
+      if (user1.reviewsCount < user2.reviewsCount) {
+        return 1;
+      } else if (user1.reviewsCount > user2.reviewsCount) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    console.log("userRanking", userRanking);
+
+    handleResult(client, result, req.query, res);
+  } catch (err) {
+    console.log(err.stack);
+  }
+};
+
 module.exports = {
   dailyTrend,
   getSingleMoviebyId,
@@ -491,5 +530,6 @@ module.exports = {
   getMovieByQuery,
   createUser,
   searchUsers,
-  getUserRanking
+  getUserRanking,
+  getAllReviews
 };

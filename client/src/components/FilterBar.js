@@ -1,8 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Loading from "./Loading";
 import { FilterWrapper, Genres, Button } from "./styling/FilterBarStyles";
+import { MovieContext } from "./providers/MovieProvider";
+
 const FilterBar = () => {
-  const [genres, setGenres] = useState();
+  const { genres, setGenres } = useContext(MovieContext);
+  // const [genres, setGenres] = useState();
   //test test test for the button to stay active
   const [active, setActive] = useState();
 

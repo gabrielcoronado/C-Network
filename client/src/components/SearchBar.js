@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import { UserContext } from "./providers/UserProvider";
 import { SearchWrapper, Search, Input } from "./styling/SearchBarStyles";
+
 const SearchBar = ({ redirect }) => {
   //   console.log("search bar redirect", redirect);
   const history = useHistory();

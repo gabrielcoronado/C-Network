@@ -7,7 +7,7 @@ export const Input = styled.input`
   padding: 10px 20px;
   font-size: 17px;
   outline: none;
-  width: 450px;
+  width: 550px;
   border: none;
   color: gray;
 `;
@@ -30,6 +30,6 @@ export const Search = styled.button`
   border: none;
   height: 50px;
   width: 50px;
-  left: 441px;
+  left: 541px;
   color: gray;
 `;

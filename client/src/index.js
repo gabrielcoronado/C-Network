@@ -5,14 +5,12 @@ import App from "./App";
 // import { Provider } from "react-redux";
 import { MovieProvider } from "./components/providers/MovieProvider";
 import UserProvider from "./components/providers/UserProvider";
-// import AppProvider from "./components/providers/AppProvider";
 // const store = createStore(
 //   movieReducer,
 //   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
 // )
 
 ReactDOM.render(
-  // <AppProvider>
   <MovieProvider>
     <UserProvider>
       {/* <Provider store={store}> */}
@@ -22,6 +20,5 @@ ReactDOM.render(
       {/* </Provider> */}
     </UserProvider>
   </MovieProvider>,
-  // </AppProvider>,
   document.getElementById("root")
 );

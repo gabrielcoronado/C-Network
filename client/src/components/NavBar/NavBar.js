@@ -3,25 +3,28 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import Avatar from "./Avatar";
+import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
   const { currentUser, appUser, signInWithGoogle, handleSignOut } = useContext(
     UserContext
   );
+  const history = useHistory();
 
+  const signOut = () => {
+    history.push("/");
+  };
   return (
     <Wrapper>
       <StyledLink to="/">
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
-        {currentUser ? (
-          <StyledLink to={`/users/${currentUser._id}`}>Profile</StyledLink>
-        ) : null}
         <StyledLink to="/feed">Feed</StyledLink>
         <>
           {appUser && appUser.email ? (
             <>
+              <StyledLink to={`/users/${appUser._id}`}>Profile</StyledLink>
               {appUser.photoURL ? <Avatar src={appUser.photoURL} /> : null}
               <StyledButton onClick={handleSignOut}>Logout</StyledButton>
             </>
@@ -45,6 +48,7 @@ const Wrapper = styled.header`
 const StyledLink = styled(Link)`
   text-decoration: none;
   margin-left: 15px;
+  cursor: pointer;
   font-size: 16px;
   display: flex;
   color: white;
@@ -53,6 +57,7 @@ const StyledLink = styled(Link)`
 const StyledButton = styled.button`
   text-decoration: none;
   margin-left: 15px;
+  cursor: pointer;
   font-size: 16px;
   display: flex;
   color: white;
@@ -60,6 +65,7 @@ const StyledButton = styled.button`
 
 const P = styled.p`
   padding-left: 10px;
+  cursor: pointer;
   font-size: 23px;
   width: 250px;
   color: white;

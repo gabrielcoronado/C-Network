@@ -5,6 +5,7 @@ export const MovieContext = createContext(null);
 export const MovieProvider = ({ children }) => {
   const [dailyTrends, setDailyTrends] = useState();
   const [weeklyTrends, setWeeklyTrends] = useState();
+  const [genres, setGenres] = useState();
 
   //Fetching Daily Trends
   useEffect(() => {
@@ -35,7 +36,9 @@ export const MovieProvider = ({ children }) => {
   }, []);
 
   return (
-    <MovieContext.Provider value={{ dailyTrends, weeklyTrends }}>
+    <MovieContext.Provider
+      value={{ dailyTrends, weeklyTrends, genres, setGenres }}
+    >
       {children}
     </MovieContext.Provider>
   );

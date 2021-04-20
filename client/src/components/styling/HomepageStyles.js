@@ -13,6 +13,12 @@ export const Wrapper = styled.div`
   margin: 80px auto;
 `;
 
+export const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+`;
+
 export const Button = styled.button`
   background-image: linear-gradient(
     90deg,
@@ -25,7 +31,8 @@ export const Button = styled.button`
   cursor: pointer;
   outline: none;
   border: none;
-  width: 250px;
+  width: 180px;
+  /* width: 250px; */
   height: 50px;
   color: white;
 `;

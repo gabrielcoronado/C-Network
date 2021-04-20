@@ -1,16 +1,18 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
+  border-bottom: 1px solid gray;
   padding: 15px 30px 30px 30px;
   margin-bottom: 30px;
-  width: 60vw;
   display: flex;
-  border-bottom: 1px solid gray;
+  width: 45vw;
 `;
 
 export const ReviewsWrapper = styled.div`
-  margin: 0 auto;
+  border-right: 1px solid gray;
+  border-left: 1px solid gray;
   color: whitesmoke;
+  margin: 0 auto;
 `;
 
 export const Date = styled.div`

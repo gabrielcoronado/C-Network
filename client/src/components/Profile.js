@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router-dom";
 import UserInfo from "./UserInfo";
 import Reviews from "./Reviews";
 import MovieCard from "./MovieCard";
+import { UserContext } from "./providers/UserProvider";
 import {
   ProfileWrapper,
   FeedWrapper,
@@ -12,10 +13,11 @@ import {
 import { CardWrapper } from "./styling/MovieResultsStyles";
 
 const Profile = () => {
-  // const { currentUser } = useContext(UserContext);
+  const { setUserPath } = useContext(UserContext);
   const [user, setUser] = useState();
   const [selectedTab, setSelectedTab] = useState("feed");
   const { id } = useParams();
+  setUserPath(id);
 
   useEffect(() => {
     fetch(`http://localhost:4000/users/${id}`, {
@@ -25,16 +27,16 @@ const Profile = () => {
       }
     }).then(res =>
       res.json().then(data => {
-        console.log("user", data.data[0]);
-        setUser(data.data[0]);
+        console.log("user", data.data);
+        setUser(data.data);
       })
     );
   }, []);
 
   return user ? (
     <ProfileWrapper>
-      <UserInfo user={user} />
       <FeedWrapper>
+        <UserInfo user={user} />
         <Filters>
           <Button
             style={
