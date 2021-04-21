@@ -1,21 +1,24 @@
 import React, { useContext, useState, useEffect } from "react";
+import { MovieContext } from "./providers/MovieProvider";
 import { UserContext } from "./providers/UserProvider";
-import UserInfo from "./UserInfo";
-import { Wrapper } from "./styling/FeedStyles";
+import { Wrapper, TrendingWrapper, SearchWrapper } from "./styling/FeedStyles";
 // import profile from "../PaiMei.jpeg";
+import SearchBar from "./SearchBar";
+import Trending from "./Trending";
 import Loading from "./Loading";
 import Reviews from "./Reviews";
+import Ranking from "./Ranking";
 
 const Profile = () => {
+  const { dailyTrends, weeklyTrends } = useContext(MovieContext);
   const { currentUser } = useContext(UserContext);
 
   const [reviews, setReviews] = useState([]);
-  const tagName = "@gab";
 
   useEffect(() => {
     //Including the currentUser to get a complete feed
     if (currentUser && currentUser.following) {
-      console.log("IF CURRENT-USER");
+      // console.log("IF CURRENT-USER");
       const reviewersId = currentUser.following.concat([currentUser._id]);
 
       fetch(
@@ -29,7 +32,7 @@ const Profile = () => {
         }
       ).then(res =>
         res.json().then(data => {
-          console.log("reviews", data.data);
+          // console.log("reviews", data.data);
           setReviews(data.data);
         })
       );
@@ -37,10 +40,17 @@ const Profile = () => {
   }, [currentUser]);
 
   return currentUser ? (
-    <Wrapper>
-      {console.log("currentUser", currentUser)}
-      <UserInfo user={currentUser} />
-      <Reviews user={currentUser} reviews={reviews} tagName={tagName} />
+    <Wrapper className="wrapper">
+      {/* {console.log("currentUser", currentUser)} */}
+      <Ranking />
+      <Reviews user={currentUser} reviews={reviews} />
+      <TrendingWrapper>
+        <SearchWrapper>
+          <SearchBar />
+        </SearchWrapper>
+        <Trending trends={dailyTrends} />
+        <Trending trends={weeklyTrends} />
+      </TrendingWrapper>
     </Wrapper>
   ) : (
     <Loading />

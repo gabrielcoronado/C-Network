@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
-import profile from "../PaiMei.jpeg";
+import profile from "./assets/PaiMei.jpeg";
 import Rating from "./post/Rating";
 import Loading from "./Loading";
 import moment from "moment";
@@ -44,7 +44,6 @@ const Review = ({ review }) => {
 
   return movie ? (
     <Wrapper key={review._id}>
-      {/* {console.log("movie", movie)} */}
       <div>
         <Poster src={base_url + posterSize + movie.poster_path} />
       </div>
@@ -62,7 +61,7 @@ const Review = ({ review }) => {
       </PostData>
     </Wrapper>
   ) : (
-    <Loading />
+    <Wrapper></Wrapper>
   );
 };
 

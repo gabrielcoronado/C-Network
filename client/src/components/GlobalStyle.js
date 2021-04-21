@@ -18,7 +18,7 @@ input {
 }
 
 *::-webkit-scrollbar {
-  width: 15px;
+  width: 8px;
 }
 *::-webkit-scrollbar-track {
   background: transparent;

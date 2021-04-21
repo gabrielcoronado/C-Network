@@ -1,12 +1,12 @@
 import Feed from "./components/Feed";
-import Movie from "./components/Movie";
 import styled from "styled-components";
 import Profile from "./components/Profile";
 import Homepage from "./components/Homepage";
-// import Login from "./components/NavBar/Login";
 import NavBar from "./components/NavBar/NavBar";
+import UserSearch from "./components/UserSearch";
 import RandomMovie from "./components/RandomMovie";
 import GlobalStyle from "./components/GlobalStyle";
+import MovieWrapper from "./components/MovieWrapper";
 import MovieResults from "./components/MovieResults";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
@@ -39,7 +39,10 @@ function App() {
               <RandomMovie />
             </Route>
             <Route exact path="/movies/:id">
-              <Movie />
+              <MovieWrapper />
+            </Route>
+            <Route exact path="/usersearch">
+              <UserSearch />
             </Route>
           </Switch>
         </MainPageGridWrapper>

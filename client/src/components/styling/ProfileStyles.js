@@ -2,6 +2,8 @@ import styled from "styled-components";
 
 export const ProfileWrapper = styled.div`
   padding: 20px 60px;
+  /* border: 1px solid gray; */
+  width: 50vw;
   margin: 0 auto;
   display: flex;
 `;
@@ -9,8 +11,9 @@ export const ProfileWrapper = styled.div`
 export const FeedWrapper = styled.div`
   padding: 15px 30px 30px 30px;
   margin-bottom: 30px;
-  width: 60vw;
+  width: 50vw;
   display: flex;
+  margin: 0 auto;
   flex-direction: column;
   border-bottom: 1px solid gray;
 `;

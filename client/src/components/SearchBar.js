@@ -1,10 +1,10 @@
-import React, { useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import { useHistory } from "react-router-dom";
 import { BiSearch } from "react-icons/bi";
 import { UserContext } from "./providers/UserProvider";
 import { SearchWrapper, Search, Input } from "./styling/SearchBarStyles";
-const SearchBar = ({ redirect }) => {
-  //   console.log("search bar redirect", redirect);
+
+const SearchBar = ({ size, redirect }) => {
   const history = useHistory();
   const {
     setSearchInput,
@@ -31,15 +31,11 @@ const SearchBar = ({ redirect }) => {
     }
   };
 
-  useEffect(() => {
-    const handleEnter = ev => {
-      if (ev.key === "Enter" && searchInput.length > 1) {
-        onSubmit();
-      }
-    };
-    const searchInputBar = document.getElementById("searchBar");
-    searchInputBar.addEventListener("keydown", handleEnter);
-  });
+  const handleEnter = ev => {
+    if (ev.key === "Enter" && searchInput.length > 1) {
+      onSubmit();
+    }
+  };
 
   return (
     <SearchWrapper>
@@ -49,6 +45,7 @@ const SearchBar = ({ redirect }) => {
         type="text"
         placeholder="Seach for movie titles"
         value={searchInput}
+        onKeyDown={handleEnter}
       />
       <Search onClick={toggleOnClick}>
         <BiSearch />

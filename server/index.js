@@ -21,7 +21,8 @@ const {
   getUserData,
   createUser,
   searchUsers,
-  getUserRanking
+  getUserRanking,
+  getAllReviews
 } = require("./handlers");
 
 const PORT = 4000;
@@ -32,8 +33,13 @@ express()
   .use(morgan("tiny"))
 
   .get(`/trending/day`, dailyTrend)
+
   .get(`/trending/week`, weeklyTrend)
+
+  .get(`/movies/random`, getRandomMovie)
+
   .get(`/movies/:id`, getSingleMoviebyId)
+
   .get(`/movies/movie/:query`, getMovieByQuery)
   //endpoints
 
@@ -44,6 +50,8 @@ express()
   .post(`/reviews`, newReview)
 
   //Follow a new user
+  .get("/usersearch", searchUsers)
+
   .put(`/users/:id/follow`, followUser)
 
   //Unfollow a user
@@ -52,16 +60,15 @@ express()
   //See all post from all user
   .get(`/reviews`, getReviewsByUser)
 
-  .get("/users/search", searchUsers)
   .get(`/users/ranking`, getUserRanking)
-  // Get user data
-  .get(`/users/:id`, getUserData)
 
+  .get(`/users/:id`, getUserData)
+  // Get user data
+
+  .get(`/feed`, getAllReviews)
   // .get(`/movies/search`)
 
   // .get(`/actors/search`)
-
-  // .get(`/movies/multi`)
 
   //Get all genres
   .get(`/genres`, getAllGenres)
@@ -73,8 +80,6 @@ express()
   .post("/login", createUser)
 
   //////////FIREBASE///////
-
-  //   .get(`/movies/randomsearch`, getRandomMovie)
 
   .put(`/movies/:id/blacklist`, blacklistMovie)
 

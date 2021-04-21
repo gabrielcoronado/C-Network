@@ -9,7 +9,7 @@ export const Div = styled.div`
 
 export const BarDiv = styled.div`
   margin: 0 auto;
-  width: 490px;
+  width: 600px;
 `;
 
 export const CardWrapper = styled.div`
@@ -17,6 +17,7 @@ export const CardWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  margin-top: 50px;
 `;
 
 export const Card = styled.div`
