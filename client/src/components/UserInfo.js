@@ -1,35 +1,37 @@
 import React, { useContext } from "react";
-import profile from "../PaiMei.jpeg";
+import profile from "./assets/PaiMei.jpeg";
 import { User, UserStats, Name, ReviewCount, Img } from "./styling/FeedStyles";
 import { UserContext } from "./providers/UserProvider";
+import { Button, Header, Info } from "./styling/UserInfoStyles";
 
 const UserInfo = ({ user }) => {
-  const { currentUser, appUser, handleFollow, handleUnfollow } = useContext(
-    UserContext
-  );
-  console.log("user", user);
-  console.log("currentUser", currentUser);
-  console.log("appUser", appUser);
+  const { appUser, handleFollow, handleUnfollow } = useContext(UserContext);
 
-  return user ? (
+  return user && appUser ? (
     <User>
       {user.photoURL ? <Img src={user.photoURL} /> : <Img src={profile} />}
       <UserStats>
-        <Name>{user.name}</Name>
-        <div>
-          Following:
-          {user.followingObject ? user.followingObject.length : "0"}
-        </div>
-        <ReviewCount>
-          Reviews:
-          {user.reviewsObject ? user.reviewsObject.length : "0"}
-        </ReviewCount>
-        {appUser._id !== user._id && appUser.following.includes(user._id) ? (
-          <button>Unfollow</button>
-        ) : appUser._id !== user._id &&
-          !appUser.following.includes(user._id) ? (
-          <button>Follow</button>
-        ) : null}
+        <Header>
+          <Name>{user.name}</Name>
+          {appUser.following &&
+          appUser._id !== user._id &&
+          appUser.following.includes(user._id) ? (
+            <Button onClick={() => handleUnfollow(user._id)}>Unfollow</Button>
+          ) : appUser.following &&
+            appUser._id !== user._id &&
+            !appUser.following.includes(user._id) ? (
+            <Button onClick={() => handleFollow(user._id)}>Follow</Button>
+          ) : null}
+        </Header>
+        <Info>
+          <div>
+            Following:{" "}
+            {user.followingObject ? user.followingObject.length : "0"}
+          </div>
+          <ReviewCount>
+            Reviews: {user.reviewsObject ? user.reviewsObject.length : "0"}
+          </ReviewCount>
+        </Info>
       </UserStats>
     </User>
   ) : null;

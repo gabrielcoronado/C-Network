@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext } from "react";
 import { Img, Wrapper, Button, ButtonWrapper } from "./styling/HomepageStyles";
 import { UserContext } from "./providers/UserProvider";
 import { useHistory } from "react-router-dom";
 import SearchBar from "./SearchBar";
-import Logo from "../newlogo2.svg";
+import Logo from "./assets/newlogo2.svg";
 // require("dotenv").config();
 
 const Homepage = () => {
@@ -26,10 +26,11 @@ const Homepage = () => {
       onSubmit();
     }
   };
+
   return (
     <Wrapper>
       <Img src={Logo} />
-      <SearchBar redirect="true" />
+      <SearchBar redirect="true" size="l" />
       <ButtonWrapper>
         <Button onClick={toggleOnClick}>Search</Button>
         <Button onClick={() => toRandomMovie()}>Random Movie Picker</Button>

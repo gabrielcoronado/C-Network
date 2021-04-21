@@ -30,6 +30,6 @@ export const Search = styled.button`
   border: none;
   height: 50px;
   width: 50px;
-  left: 541px;
+  right: -3px;
   color: gray;
 `;

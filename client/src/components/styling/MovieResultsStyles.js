@@ -9,7 +9,7 @@ export const Div = styled.div`
 
 export const BarDiv = styled.div`
   margin: 0 auto;
-  width: 490px;
+  width: 600px;
 `;
 
 export const CardWrapper = styled.div`

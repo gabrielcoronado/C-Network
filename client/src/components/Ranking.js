@@ -10,7 +10,7 @@ const Ranking = () => {
   const handleUserPage = id => {
     history.push(`/users/${id}`);
   };
-  return (
+  return ranking ? (
     <RankingWrapper>
       <TitleWrapper>
         <h3>Ranking:</h3>
@@ -33,7 +33,7 @@ const Ranking = () => {
         })}
       </RankWrapper>
     </RankingWrapper>
-  );
+  ) : null;
 };
 
 const RankingWrapper = styled.div`

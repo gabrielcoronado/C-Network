@@ -220,6 +220,63 @@ const getMovieByQuery = async (req, res) => {
   }
 };
 
+const getRandomInt = (min, max) => {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+const getRandomMovie = async (req, res) => {
+  try {
+    const { genre } = req.query;
+    const genreQuery = genre ? `with_genres=${genre}` : "";
+    const currentUserId = req.headers["current-user-id"];
+    const user = await getUserFromDB({ userId: currentUserId });
+    // console.log("user", user);
+    console.log("query", genreQuery);
+
+    const firstResponse = await getMoviesFromAPI(genreQuery, 1);
+    // console.log("firstResponse", firstResponse);
+    const totalPages = firstResponse["total_pages"];
+    // console.log("totalPages", totalPages);
+    const randomPage = getRandomInt(1, totalPages);
+    // console.log("randomPage", randomPage);
+    const movies = await getMoviesFromAPI(genreQuery, randomPage);
+    // console.log("movies", movies);
+    const whitelistedMovies = movies.results.filter(
+      movie => !user.blacklist.includes(movie.id)
+    );
+
+    const totalMovies = whitelistedMovies.length;
+    // console.log("totalMovies", totalMovies);
+
+    const randomMovieIndex = getRandomInt(0, totalMovies - 1);
+    // console.log("randomMovieIndex", randomMovieIndex);
+
+    const randomMovie = whitelistedMovies[randomMovieIndex];
+    // console.log("randomMovie", randomMovie);
+
+    handleMovieDbResponse(randomMovie, res);
+  } catch (err) {
+    console.log("error", err);
+  }
+};
+
+const getMoviesFromAPI = async (query, pageNumber) => {
+  try {
+    const constantQuery = query ? `&${query}` : "";
+    const api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en-US&page=${pageNumber}&include_adult=false${constantQuery}`;
+
+    console.log("api_url", api_url);
+    const fetch_response = await fetch(api_url);
+    const data = await fetch_response.json();
+
+    return data;
+  } catch (err) {
+    console.log("error", err);
+  }
+};
+
 //GET ALL REVIEWS BY USER ///
 
 const getReviewsByUser = async (req, res) => {
@@ -397,11 +454,19 @@ const getUserData = async (req, res) => {
   try {
     const userId = req.params.id;
 
+    const currentUserId = req.headers["current-user-id"];
+
     const user = await getUserFromDB({ userId });
-    console.log("user", user);
 
     if (user) {
-      res.status(201).json({ status: 201, data: user });
+      if (user._id === currentUserId) {
+        res.status(201).json({ status: 201, data: user });
+      } else {
+        const { photoURL, name, reviewsObject } = user;
+        res
+          .status(201)
+          .json({ status: 201, data: { photoURL, name, reviewsObject } });
+      }
     } else {
       res.status(500).json({
         status: 500,
@@ -415,6 +480,7 @@ const getUserData = async (req, res) => {
 };
 
 const searchUsers = async (req, res) => {
+  console.log("se esta metiendo");
   try {
     const { client, db } = await dbConnect();
 
@@ -436,7 +502,7 @@ const searchUsers = async (req, res) => {
 
     handleResult(client, users, req.query, res);
 
-    console.log("search result", result);
+    console.log("search result", users);
   } catch (err) {
     console.log(err.stack);
   }
@@ -453,7 +519,7 @@ const getUserRanking = async (req, res) => {
 
     const users = result.map(user => {
       return {
-        id: _id,
+        id: user._id,
         name: user.name,
         photoURL: user.photoURL,
         reviewsCount: user.reviews && user.reviews.length
@@ -531,5 +597,6 @@ module.exports = {
   createUser,
   searchUsers,
   getUserRanking,
-  getAllReviews
+  getAllReviews,
+  getRandomMovie
 };

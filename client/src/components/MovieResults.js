@@ -27,6 +27,14 @@ const MovieResults = () => {
   const base_url = `https://image.tmdb.org`;
   const posterSize = `/t/p/w500`;
 
+  const singleMovieHandle = id => {
+    if (!isShowingTrends) {
+      // To show again the previous search result when going back
+      setSearchSubmitted(true);
+    }
+    history.push(`/movies/${id}`);
+  };
+
   useEffect(() => {
     if (searchInput && searchSubmitted) {
       fetch(`http://localhost:4000/movies/movie/${searchInput}`, {
@@ -50,14 +58,6 @@ const MovieResults = () => {
     }
   }, [searchSubmitted]);
 
-  const singleMovieHandle = id => {
-    if (!isShowingTrends) {
-      // To show again the previous search result when going back
-      setSearchSubmitted(true);
-    }
-    history.push(`/movies/${id}`);
-  };
-
   useEffect(() => {
     if (!searchInput && !searchSubmitted) {
       setIsShowingTrends(true);
@@ -68,7 +68,7 @@ const MovieResults = () => {
   return movies ? (
     <Wrapper>
       <BarDiv>
-        <SearchBar redirect={false} />
+        <SearchBar redirect={false} size="l" />
       </BarDiv>
       <FilterBar />
       <Div>

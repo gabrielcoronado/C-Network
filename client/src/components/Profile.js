@@ -13,24 +13,26 @@ import {
 import { CardWrapper } from "./styling/MovieResultsStyles";
 
 const Profile = () => {
-  const { setUserPath } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState();
   const [selectedTab, setSelectedTab] = useState("feed");
   const { id } = useParams();
-  setUserPath(id);
 
   useEffect(() => {
-    fetch(`http://localhost:4000/users/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    }).then(res =>
-      res.json().then(data => {
-        console.log("user", data.data);
-        setUser(data.data);
-      })
-    );
+    if (currentUser) {
+      fetch(`http://localhost:4000/users/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "current-user-id": currentUser._id
+        }
+      }).then(res =>
+        res.json().then(data => {
+          console.log("user", data.data);
+          setUser(data.data);
+        })
+      );
+    }
   }, []);
 
   return user ? (

@@ -4,7 +4,6 @@ import { UserContext } from "./providers/UserProvider";
 import { Wrapper, TrendingWrapper, SearchWrapper } from "./styling/FeedStyles";
 // import profile from "../PaiMei.jpeg";
 import SearchBar from "./SearchBar";
-import UserInfo from "./UserInfo";
 import Trending from "./Trending";
 import Loading from "./Loading";
 import Reviews from "./Reviews";

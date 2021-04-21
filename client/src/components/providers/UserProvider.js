@@ -23,13 +23,11 @@ const providers = {
 const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
   const [searchInput, setSearchInput] = useState("");
-  const [moviePath, setMoviePath] = useState("");
-  const [userPath, setUserPath] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
+  const [userSearchInput, setUserSearchInput] = useState("");
   const [appUser, setAppUser] = useState({});
   const [message, setMessage] = useState("");
   const [ranking, setRanking] = useState();
-  const [feed, setFeed] = useState();
 
   const handleSignOut = () => {
     signOut();
@@ -62,26 +60,8 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
     }
   }, [user]);
 
-  const handleBlacklist = async () => {
-    const res = await fetch(
-      `http://localhost:4000/movies/${moviePath}/blacklist`,
-      {
-        method: "PUT",
-        body: JSON.stringify({
-          currentUser
-        }),
-        headers: {
-          "Content-Type": "application/json",
-          Accept: "application/json"
-        }
-      }
-    );
-    const data = await res.json();
-    console.log("blacklisted", data);
-  };
-
-  const handleSeen = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${moviePath}/seen`, {
+  const handleFollow = async id => {
+    const res = await fetch(`http://localhost:4000/users/${id}/follow`, {
       method: "PUT",
       body: JSON.stringify({
         currentUser
@@ -95,23 +75,9 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
     console.log("seen", data);
   };
 
-  const handleFollow = async () => {
-    const res = await fetch(`/users/${userPath}/follow`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
-  const handleUnfollow = async () => {
-    const res = await fetch(`/users/${userPath}/unfollow`, {
+  const handleUnfollow = async id => {
+    console.log("id", id);
+    const res = await fetch(`http://localhost:4000/users/${id}/unfollow`, {
       method: "PUT",
       body: JSON.stringify({
         currentUser
@@ -140,23 +106,6 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
     );
   }, []);
 
-  //////////////// GET ALL REVIEWS //////////////////
-
-  // useEffect(() => {
-  //   fetch(`http://localhost:4000/feed`, {
-  //     method: "GET",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //       Accept: "application/json"
-  //     }
-  //   }).then(res =>
-  //     res.json().then(data => {
-  //       console.log("feed", data.data);
-  //       setFeed(data.data);
-  //     })
-  //   );
-  // }, []);
-
   return (
     <UserContext.Provider
       value={{
@@ -164,19 +113,16 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         searchInput,
         setSearchInput,
         setSearchSubmitted,
-        handleSeen,
-        handleBlacklist,
-        setMoviePath,
         signInWithGoogle,
         appUser,
         handleSignOut,
         message,
         currentUser,
         ranking,
-        setUserPath,
         handleUnfollow,
         handleFollow,
-        feed
+        setUserSearchInput,
+        userSearchInput
       }}
     >
       {children}

@@ -1,16 +1,11 @@
-import React, { useContext } from "react";
+import React from "react";
 import Loading from "./Loading";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
-import { MovieContext } from "./providers/MovieProvider";
 import { FaStar } from "react-icons/fa";
 
 const Trending = ({ trends }) => {
-  const { genres } = useContext(MovieContext);
   const history = useHistory();
-  // const base_url = `https://image.tmdb.org/t/p/w500/`;
-  // const { dailyTrends } = useContext(MovieContext);
-  // console.log("dailyTrends", dailyTrends);
   const base_url = `https://image.tmdb.org`;
   const posterSize = `/t/p/w500`;
 
@@ -30,9 +25,6 @@ const Trending = ({ trends }) => {
               <Poster src={base_url + posterSize + trend.poster_path} />
               <Info>
                 <Title>{trend.title}</Title>
-                {/* {genres.map(genre => {
-                  return <div>{genre.name}</div>;
-                })} */}
                 <Vote>
                   <FaStar size={14} /> {trend.vote_average}
                 </Vote>

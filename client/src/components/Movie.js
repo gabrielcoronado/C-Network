@@ -27,10 +27,7 @@ const Movie = () => {
   const [movie, setMovie] = useState();
   const [hidden, setHidden] = useState(true);
   const { id } = useParams();
-  const { currentUser, handleSeen, handleBlacklist, setMoviePath } = useContext(
-    UserContext
-  );
-  setMoviePath(id);
+  const { currentUser } = useContext(UserContext);
 
   const base_url = `https://image.tmdb.org`;
   // const backdropSize = `/t/p/original`;
@@ -40,6 +37,35 @@ const Movie = () => {
     let hours = Math.floor(num / 60);
     let minutes = num % 60;
     return hours + "h " + minutes + "m";
+  };
+  const handleBlacklist = async () => {
+    const res = await fetch(`http://localhost:4000/movies/${id}/blacklist`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("blacklisted", data);
+  };
+
+  const handleSeen = async () => {
+    const res = await fetch(`http://localhost:4000/movies/${id}/seen`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("seen", data);
   };
 
   useEffect(() => {

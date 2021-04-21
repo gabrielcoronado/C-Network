@@ -3,23 +3,23 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import Avatar from "./Avatar";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
-  const { currentUser, appUser, signInWithGoogle, handleSignOut } = useContext(
-    UserContext
-  );
-  const history = useHistory();
+  const { appUser, signInWithGoogle, handleSignOut } = useContext(UserContext);
+  // const history = useHistory();
 
-  const signOut = () => {
-    history.push("/");
-  };
+  // const signOut = () => {
+  //   history.push("/usersearch");
+  // };
+
   return (
     <Wrapper>
       <StyledLink to="/">
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
+        <StyledLink to="/usersearch">Search Users</StyledLink>
         <StyledLink to="/feed">Feed</StyledLink>
         <>
           {appUser && appUser.email ? (
@@ -74,6 +74,7 @@ const P = styled.p`
 const Nav = styled.div`
   justify-content: flex-end;
   background-color: transparent;
+  align-items: center;
   display: flex;
   width: 100%;
 `;
