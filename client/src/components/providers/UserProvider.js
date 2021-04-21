@@ -29,14 +29,9 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [message, setMessage] = useState("");
   const [ranking, setRanking] = useState();
 
-  const handleSignOut = () => {
-    signOut();
-    setAppUser({});
-  };
-
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:4000/login`, {
+      fetch(`/login`, {
         method: "post",
         headers: {
           "Content-Type": "application/json"
@@ -60,41 +55,9 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
     }
   }, [user]);
 
-  const handleFollow = async id => {
-    console.log("providerID", id);
-    const res = await fetch(`http://localhost:4000/users/${id}/follow`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
-  const handleUnfollow = async id => {
-    console.log("id", id);
-    const res = await fetch(`http://localhost:4000/users/${id}/unfollow`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
   ////// SET RANKING //////
   useEffect(() => {
-    fetch(`http://localhost:4000/users/ranking`, {
+    fetch(`/users/ranking`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
@@ -116,14 +79,13 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         setSearchSubmitted,
         signInWithGoogle,
         appUser,
-        handleSignOut,
         message,
         currentUser,
         ranking,
-        handleUnfollow,
-        handleFollow,
         setUserSearchInput,
-        userSearchInput
+        userSearchInput,
+        setAppUser,
+        signOut
       }}
     >
       {children}

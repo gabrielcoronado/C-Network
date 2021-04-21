@@ -25,7 +25,7 @@ const UserSearch = () => {
 
   useEffect(() => {
     if (userSearchInput && submitted) {
-      fetch(`http://localhost:4000/usersearch?name=${userSearchInput}`, {
+      fetch(`/usersearch?name=${userSearchInput}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"
@@ -47,7 +47,7 @@ const UserSearch = () => {
   };
 
   return (
-    <>
+    <Wrapper>
       <SearchWrapper>
         <Input
           placeholder="Search users"
@@ -64,18 +64,25 @@ const UserSearch = () => {
       {searchResult &&
         searchResult.map(user => {
           return (
-            <div onClick={() => history.push(`/users/${user._id}`)}>
+            <User
+              key={user._id}
+              onClick={() => history.push(`/users/${user._id}`)}
+            >
               {user.photoURL ? (
                 <img src={user.photoURL} alt="photoURL" />
               ) : null}
               <div>{user.name}</div>
               <div>{user.reviewsCount}</div>
-            </div>
+            </User>
           );
         })}
-    </>
+    </Wrapper>
   );
 };
+
+const Wrapper = styled.div`
+  margin: 0 auto;
+`;
 
 const SearchWrapper = styled.div`
   border: 1px solid gray;
@@ -87,6 +94,8 @@ const SearchWrapper = styled.div`
   height: 40px;
   width: 431px;
 `;
+
+const User = styled.div``;
 
 const Search = styled.div`
   background: transparent;

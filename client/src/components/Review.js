@@ -29,7 +29,7 @@ const Review = ({ review }) => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/movies/${review.movie_id}`, {
+    fetch(`/movies/${review.movie_id}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"

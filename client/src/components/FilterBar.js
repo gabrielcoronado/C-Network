@@ -25,7 +25,7 @@ const FilterBar = ({ handleSelect, handleUnselect, selectedGenres }) => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/genres`, {
+    fetch(`/genres`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"

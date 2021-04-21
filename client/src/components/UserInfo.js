@@ -4,9 +4,43 @@ import { User, UserStats, Name, ReviewCount, Img } from "./styling/FeedStyles";
 import { UserContext } from "./providers/UserProvider";
 import { Button, Header, Info } from "./styling/UserInfoStyles";
 
-const UserInfo = ({ user }) => {
+const UserInfo = ({ user, setStatusChange }) => {
   console.log("user", user);
-  const { appUser, handleFollow, handleUnfollow } = useContext(UserContext);
+  const { appUser, currentUser } = useContext(UserContext);
+
+  const handleFollow = async id => {
+    console.log("providerID", id);
+    const res = await fetch(`/users/${id}/follow`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("seen", data);
+    setStatusChange(true);
+  };
+
+  const handleUnfollow = async id => {
+    console.log("id", id);
+    const res = await fetch(`/users/${id}/unfollow`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    console.log("seen", data);
+    setStatusChange(true);
+  };
 
   return user && appUser ? (
     <User>

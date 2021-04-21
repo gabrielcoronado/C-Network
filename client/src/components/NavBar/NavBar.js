@@ -3,15 +3,19 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { UserContext } from "../providers/UserProvider";
 import Avatar from "./Avatar";
-// import { useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 const NavBar = () => {
-  const { appUser, signInWithGoogle, handleSignOut } = useContext(UserContext);
-  // const history = useHistory();
+  const { appUser, setAppUser, signOut, signInWithGoogle } = useContext(
+    UserContext
+  );
+  const history = useHistory();
 
-  // const signOut = () => {
-  //   history.push("/usersearch");
-  // };
+  const handleSignOut = () => {
+    signOut();
+    setAppUser({});
+    history.push("/");
+  };
 
   return (
     <Wrapper>
@@ -19,14 +23,20 @@ const NavBar = () => {
         <P>The Couch Network</P>
       </StyledLink>
       <Nav>
-        <StyledLink to="/usersearch">Search Users</StyledLink>
-        <StyledLink to="/feed">Feed</StyledLink>
         <>
           {appUser && appUser.email ? (
             <>
-              <StyledLink to={`/users/${appUser._id}`}>Profile</StyledLink>
+              <StyledLink to="/usersearch">
+                <Span>Search Users</Span>
+              </StyledLink>
+              <StyledLink to="/feed">
+                <Span> Feed</Span>
+              </StyledLink>
+              <StyledLink to={`/users/${appUser._id}`}>
+                <Span>Profile</Span>
+              </StyledLink>
               {appUser.photoURL ? <Avatar src={appUser.photoURL} /> : null}
-              <StyledButton onClick={handleSignOut}>Logout</StyledButton>
+              <StyledButton onClick={handleSignOut}> Logout</StyledButton>
             </>
           ) : (
             <StyledButton onClick={signInWithGoogle}>Login</StyledButton>
@@ -77,6 +87,11 @@ const Nav = styled.div`
   align-items: center;
   display: flex;
   width: 100%;
+`;
+
+const Span = styled.span`
+  border-right: 1px solid white;
+  padding-right: 10px;
 `;
 
 export default NavBar;

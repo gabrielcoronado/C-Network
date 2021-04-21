@@ -36,7 +36,7 @@ const MovieResults = () => {
 
   useEffect(() => {
     if (searchInput && searchSubmitted) {
-      fetch(`http://localhost:4000/movies/movie/${searchInput}`, {
+      fetch(`/movies/movie/${searchInput}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json"

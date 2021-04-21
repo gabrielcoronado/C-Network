@@ -21,16 +21,13 @@ const Profile = () => {
       // console.log("IF CURRENT-USER");
       const reviewersId = currentUser.following.concat([currentUser._id]);
 
-      fetch(
-        `http://localhost:4000/reviews?reviewersId=${reviewersId.join(",")}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "application/json"
-          }
+      fetch(`/reviews?reviewersId=${reviewersId.join(",")}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json"
         }
-      ).then(res =>
+      }).then(res =>
         res.json().then(data => {
           // console.log("reviews", data.data);
           setReviews(data.data);

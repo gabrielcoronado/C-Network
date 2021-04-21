@@ -24,7 +24,7 @@ const RandomMovie = () => {
       const query = selectedGenres.length
         ? `?genre=${selectedGenres.join(",")}`
         : "";
-      fetch(`http://localhost:4000/movies/random${query}`, {
+      fetch(`/movies/random${query}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
