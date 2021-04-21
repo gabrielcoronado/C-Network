@@ -194,14 +194,17 @@ const getAllGenres = async (req, res) => {
 
 const getSingleMoviebyId = async (req, res) => {
   const { id } = req.params;
-  console.log("id", id);
-  const api_url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
-  const fetch_response = await fetch(api_url);
-  const data = await fetch_response.json();
+
+  const data = await getMovieByIdFromAPI(id)
 
   handleMovieDbResponse(data, res);
 };
 
+const getMovieByIdFromAPI = async (id) => {
+  const api_url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
+  const fetch_response = await fetch(api_url);
+  return fetch_response.json();
+}
 //To Do
 
 const getMovieByQuery = async (req, res) => {
@@ -256,7 +259,9 @@ const getRandomMovie = async (req, res) => {
     const randomMovie = whitelistedMovies[randomMovieIndex];
     // console.log("randomMovie", randomMovie);
 
-    handleMovieDbResponse(randomMovie, res);
+    const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id)
+
+    handleMovieDbResponse(fullMovieObject, res);
   } catch (err) {
     console.log("error", err);
   }

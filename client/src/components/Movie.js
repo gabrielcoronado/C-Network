@@ -1,5 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
-import { UserContext } from "./providers/UserProvider";
+import React from "react";
 import { GoPrimitiveDot } from "react-icons/go";
 import { GiRoundStar } from "react-icons/gi";
 import { useParams } from "react-router-dom";
@@ -23,12 +22,13 @@ import {
   Runtime
 } from "./styling/MovieStyles";
 
-const Movie = () => {
-  const [movie, setMovie] = useState();
-  const [hidden, setHidden] = useState(true);
-  const { id } = useParams();
-  const { currentUser } = useContext(UserContext);
-
+const Movie = ({
+  movieData,
+  setHidden,
+  handleSeen,
+  handleBlacklist,
+  hidden
+}) => {
   const base_url = `https://image.tmdb.org`;
   // const backdropSize = `/t/p/original`;
   const posterSize = `/t/p/w500`;
@@ -38,69 +38,24 @@ const Movie = () => {
     let minutes = num % 60;
     return hours + "h " + minutes + "m";
   };
-  const handleBlacklist = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/blacklist`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("blacklisted", data);
-  };
 
-  const handleSeen = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/seen`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
-  useEffect(() => {
-    fetch(`http://localhost:4000/movies/${id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    }).then(res =>
-      res.json().then(data => {
-        // console.log("movie", data.data);
-        setMovie(data.data);
-      })
-    );
-  }, []);
-
-  return movie ? (
-    <Wrapper>
-      <MovieWrapper
-        styles={{
-          backgroundImage: `url(
-          http://www.themoviedb.org/t/p/w1920_and_h800_multi_faces${movie.backdrop_path}
-       )`,
-          backgroundSize: "cover"
-        }}
-      >
-        <Poster src={base_url + posterSize + movie.poster_path} />
-        <MovieInfo>
-          <H1>{movie.title}</H1>
-          {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}
-          <Details>
-            <div>{movie.release_date}</div>
-            <Lang>({movie.original_language.toUpperCase()})</Lang>
-            <GoPrimitiveDot size={11} />
-            {movie.genres.map(genre => {
+  return movieData ? (
+    <MovieWrapper>
+      <Poster src={base_url + posterSize + movieData.poster_path} />
+      <MovieInfo>
+        <H1>{movieData.title}</H1>
+        {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}
+        <Details>
+          <div>{movieData.release_date}</div>
+          <Lang>
+            (
+            {movieData.original_language &&
+              movieData.original_language.toUpperCase()}
+            )
+          </Lang>
+          <GoPrimitiveDot size={11} />
+          {movieData.genres &&
+            movieData.genres.map(genre => {
               return (
                 <Genre key={genre.id}>
                   {" "}
@@ -108,31 +63,27 @@ const Movie = () => {
                 </Genre>
               );
             })}
-            <GoPrimitiveDot size={11} />
-            <Runtime>{time_converter(movie.runtime)}</Runtime>
-          </Details>
-          {/* UP UNTIL HERE */}
-          <Button onClick={() => setHidden(!hidden)}>
-            <GiRoundStar size={20} />
-          </Button>
-          <Button onClick={() => handleSeen()}>
-            <FaRegEye size={20} />
-          </Button>
-          <Button onClick={() => handleBlacklist()}>
-            <ImBlocked size={20} />
-          </Button>
-          <Tagline>
-            <i>{movie.tagline}</i>
-          </Tagline>
-          <h3>Overview:</h3>
-          <Overview>{movie.overview}</Overview>
-        </MovieInfo>
-      </MovieWrapper>
-      <Post hidden={hidden} currentUser={currentUser} id={id} />
-    </Wrapper>
-  ) : (
-    <Loading />
-  );
+          <GoPrimitiveDot size={11} />
+          <Runtime>{time_converter(movieData.runtime)}</Runtime>
+        </Details>
+        {/* UP UNTIL HERE */}
+        <Button onClick={() => setHidden && setHidden(!hidden)}>
+          <GiRoundStar size={20} />
+        </Button>
+        <Button onClick={() => handleSeen && handleSeen()}>
+          <FaRegEye size={20} />
+        </Button>
+        <Button onClick={() => handleBlacklist && handleBlacklist()}>
+          <ImBlocked size={20} />
+        </Button>
+        <Tagline>
+          <i>{movieData.tagline}</i>
+        </Tagline>
+        <h3>Overview:</h3>
+        <Overview>{movieData.overview}</Overview>
+      </MovieInfo>
+    </MovieWrapper>
+  ) : null;
 };
 
-export default withRouter(Movie);
+export default Movie;
