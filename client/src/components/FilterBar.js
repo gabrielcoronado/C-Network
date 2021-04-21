@@ -21,7 +21,7 @@ const FilterBar = ({ handleSelect, handleUnselect, selectedGenres }) => {
   };
 
   const isActive = genreId => {
-    return selectedGenres.includes(genreId);
+    return selectedGenres && selectedGenres.includes(genreId);
   };
 
   useEffect(() => {

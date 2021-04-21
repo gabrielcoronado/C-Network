@@ -195,16 +195,16 @@ const getAllGenres = async (req, res) => {
 const getSingleMoviebyId = async (req, res) => {
   const { id } = req.params;
 
-  const data = await getMovieByIdFromAPI(id)
+  const data = await getMovieByIdFromAPI(id);
 
   handleMovieDbResponse(data, res);
 };
 
-const getMovieByIdFromAPI = async (id) => {
+const getMovieByIdFromAPI = async id => {
   const api_url = `https://api.themoviedb.org/3/movie/${id}?api_key=${key}&language=en-US`;
   const fetch_response = await fetch(api_url);
   return fetch_response.json();
-}
+};
 //To Do
 
 const getMovieByQuery = async (req, res) => {
@@ -259,7 +259,7 @@ const getRandomMovie = async (req, res) => {
     const randomMovie = whitelistedMovies[randomMovieIndex];
     // console.log("randomMovie", randomMovie);
 
-    const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id)
+    const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id);
 
     handleMovieDbResponse(fullMovieObject, res);
   } catch (err) {
@@ -467,10 +467,10 @@ const getUserData = async (req, res) => {
       if (user._id === currentUserId) {
         res.status(201).json({ status: 201, data: user });
       } else {
-        const { photoURL, name, reviewsObject } = user;
+        const { photoURL, name, reviewsObject, _id } = user;
         res
           .status(201)
-          .json({ status: 201, data: { photoURL, name, reviewsObject } });
+          .json({ status: 201, data: { photoURL, name, reviewsObject, _id } });
       }
     } else {
       res.status(500).json({
@@ -499,6 +499,7 @@ const searchUsers = async (req, res) => {
 
     const users = result.map(user => {
       return {
+        _id: user._id,
         name: user.name,
         photoURL: user.photoURL,
         reviewsCount: user.reviews && user.reviews.length
@@ -524,7 +525,7 @@ const getUserRanking = async (req, res) => {
 
     const users = result.map(user => {
       return {
-        id: user._id,
+        _id: user._id,
         name: user.name,
         photoURL: user.photoURL,
         reviewsCount: user.reviews && user.reviews.length

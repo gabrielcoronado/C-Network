@@ -5,6 +5,7 @@ import { UserContext } from "./providers/UserProvider";
 import { Button, Header, Info } from "./styling/UserInfoStyles";
 
 const UserInfo = ({ user }) => {
+  console.log("user", user);
   const { appUser, handleFollow, handleUnfollow } = useContext(UserContext);
 
   return user && appUser ? (

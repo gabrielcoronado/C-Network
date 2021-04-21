@@ -16,6 +16,7 @@ const Profile = () => {
   const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState();
   const [selectedTab, setSelectedTab] = useState("feed");
+  const [statusChange, setStatusChange] = useState(true);
   const { id } = useParams();
 
   useEffect(() => {
@@ -30,10 +31,11 @@ const Profile = () => {
         res.json().then(data => {
           console.log("user", data.data);
           setUser(data.data);
+          setStatusChange(false);
         })
       );
     }
-  }, []);
+  }, [statusChange]);
 
   return user ? (
     <ProfileWrapper>

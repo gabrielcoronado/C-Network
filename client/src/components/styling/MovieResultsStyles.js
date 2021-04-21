@@ -17,6 +17,7 @@ export const CardWrapper = styled.div`
   flex-wrap: wrap;
   justify-content: space-between;
   width: 100%;
+  margin-top: 50px;
 `;
 
 export const Card = styled.div`

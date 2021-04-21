@@ -15,7 +15,6 @@ const UserSearch = () => {
 
   const onSubmit = () => {
     setSubmitted(true);
-    history.push(`/usersearch`);
   };
 
   const toggleOnClick = () => {
@@ -65,13 +64,13 @@ const UserSearch = () => {
       {searchResult &&
         searchResult.map(user => {
           return (
-            <>
+            <div onClick={() => history.push(`/users/${user._id}`)}>
               {user.photoURL ? (
                 <img src={user.photoURL} alt="photoURL" />
               ) : null}
               <div>{user.name}</div>
               <div>{user.reviewsCount}</div>
-            </>
+            </div>
           );
         })}
     </>

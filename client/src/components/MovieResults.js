@@ -2,9 +2,8 @@ import React, { useState, useEffect, useContext } from "react";
 import { MovieContext } from "./providers/MovieProvider";
 import { UserContext } from "./providers/UserProvider";
 import { useHistory } from "react-router-dom";
-import FilterBar from "./FilterBar";
-import Loading from "./Loading";
 import SearchBar from "./SearchBar";
+import Loading from "./Loading";
 import {
   Card,
   Title,
@@ -70,7 +69,6 @@ const MovieResults = () => {
       <BarDiv>
         <SearchBar redirect={false} size="l" />
       </BarDiv>
-      <FilterBar />
       <Div>
         <CardWrapper>
           {movies.map(movie => {

@@ -61,6 +61,7 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   }, [user]);
 
   const handleFollow = async id => {
+    console.log("providerID", id);
     const res = await fetch(`http://localhost:4000/users/${id}/follow`, {
       method: "PUT",
       body: JSON.stringify({
