@@ -16,12 +16,11 @@ const Profile = () => {
   const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState();
   const [selectedTab, setSelectedTab] = useState("feed");
-  const [statusChange, setStatusChange] = useState(true);
-  console.log("statusChange", statusChange);
+
   const { id } = useParams();
 
   useEffect(() => {
-    if (currentUser && statusChange) {
+    if (currentUser) {
       fetch(`/users/${id}`, {
         headers: {
           "Content-Type": "application/json",
@@ -32,16 +31,15 @@ const Profile = () => {
         res.json().then(data => {
           console.log("user", data.data);
           setUser(data.data);
-          setStatusChange(false);
         })
       );
     }
-  }, [statusChange]);
+  }, [currentUser]);
 
   return user ? (
     <ProfileWrapper>
       <FeedWrapper>
-        <UserInfo user={user} setStatusChange={setStatusChange} />
+        <UserInfo user={user} />
         <Filters>
           <Button
             style={

@@ -22,9 +22,10 @@ const providers = {
 
 const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
   const [userSearchInput, setUserSearchInput] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [updateCurrentUser, setUpdateCurrentUser] = useState(false);
   const [appUser, setAppUser] = useState({});
   const [message, setMessage] = useState("");
   const [ranking, setRanking] = useState();
@@ -54,6 +55,25 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         });
     }
   }, [user]);
+
+  useEffect(() => {
+    if (currentUser && updateCurrentUser) {
+      fetch(`/users/${currentUser._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "current-user-id": currentUser._id
+        }
+      }).then(res =>
+        res.json().then(data => {
+          console.log("user", data.data);
+          setCurrentUser(data.data);
+          setAppUser(data.data);
+          setUpdateCurrentUser(false);
+        })
+      );
+    }
+  }, [updateCurrentUser]);
 
   ////// SET RANKING //////
   useEffect(() => {
@@ -85,7 +105,8 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         setUserSearchInput,
         userSearchInput,
         setAppUser,
-        signOut
+        signOut,
+        setUpdateCurrentUser
       }}
     >
       {children}

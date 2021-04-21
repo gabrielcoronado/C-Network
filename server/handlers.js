@@ -144,13 +144,13 @@ const getUserFromDB = async ({ email, userId }) => {
         { $match: match }
       ])
       .toArray();
-    console.log("result", result);
+    // console.log("result", result);
 
     client.close();
     console.log("Disconnected!");
 
     if (result) {
-      console.log("result", result);
+      // console.log("result", result);
       return result[0];
     } else {
       return null;
@@ -391,7 +391,7 @@ const followUser = async (req, res) => {
       { _id: ObjectID(currentUser._id) },
       { $addToSet: { following: ObjectID(userToFollowId) } }
     );
-
+  console.log(`followed ${userToFollowId}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -410,7 +410,7 @@ const unfollowUser = async (req, res) => {
       { _id: ObjectID(currentUser._id) },
       { $pullAll: { following: [ObjectID(userToUnfollowId)] } }
     );
-
+  console.log(`unfollowed ${userToUnfollowId}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -464,7 +464,7 @@ const getUserData = async (req, res) => {
     const user = await getUserFromDB({ userId });
 
     if (user) {
-      if (user._id === currentUserId) {
+      if (userId === currentUserId) {
         res.status(201).json({ status: 201, data: user });
       } else {
         const { photoURL, name, reviewsObject, _id } = user;
@@ -508,7 +508,7 @@ const searchUsers = async (req, res) => {
 
     handleResult(client, users, req.query, res);
 
-    console.log("search result", users);
+    // console.log("search result", users);
   } catch (err) {
     console.log(err.stack);
   }
@@ -541,7 +541,7 @@ const getUserRanking = async (req, res) => {
         return 0;
       }
     });
-    console.log("userRanking", userRanking);
+    // console.log("userRanking", userRanking);
 
     handleResult(client, userRanking, req.query, res);
   } catch (err) {
@@ -578,7 +578,7 @@ const getAllReviews = async (req, res) => {
         return 0;
       }
     });
-    console.log("userRanking", userRanking);
+    // console.log("userRanking", userRanking);
 
     handleResult(client, result, req.query, res);
   } catch (err) {
