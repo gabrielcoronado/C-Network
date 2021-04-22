@@ -29,8 +29,7 @@ const Movie = ({ movieData, setHidden, hidden, hideReview }) => {
   const posterSize = `/t/p/w500`;
 
   const activeStyle = {
-    color: "red"
-    // "linear-gradient(90deg,rgb(253, 36, 29) 5%,rgb(255, 128, 55) 100%)"
+    color: "rgb(253, 36, 29)"
   };
 
   const isFavorite = id => {

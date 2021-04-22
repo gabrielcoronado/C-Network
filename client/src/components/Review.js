@@ -76,7 +76,11 @@ const Review = ({ review, user }) => {
               ) : (
                 <Img src={placeholder} />
               )}
-              <Tag>{review.reviewer && review.reviewer[0].name}</Tag>
+              <Tag>
+                {review.reviewer &&
+                  review.reviewer.length &&
+                  review.reviewer[0].name}
+              </Tag>
             </>
           </User>
         ) : null}

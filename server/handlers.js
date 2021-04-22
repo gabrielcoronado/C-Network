@@ -69,7 +69,6 @@ const createUser = async (req, res) => {
 
     appUsersRef.push(req.body).then(async () => {
       const user = await createNewUser(req.body);
-
       res.status(200).json({
         status: 200,
         data: user,
@@ -375,7 +374,7 @@ const createNewUser = async ({ email, displayName, photoURL }) => {
   console.log("Disconnected!");
 
   if (result) {
-    return result;
+    return result.ops[0];
   } else {
     console.log("error in createNewUser", result);
     return null;
