@@ -5,12 +5,12 @@ import { UserContext } from "./providers/UserProvider";
 import { Button, Header, Info, UnfollowButton } from "./styling/UserInfoStyles";
 
 const UserInfo = ({ user }) => {
-  // console.log("user", user);
   const { appUser, currentUser, setUpdateCurrentUser } = useContext(
     UserContext
   );
 
-  const testFunction = async action => {
+  /////////// FOLLOW & UNFOLLOW //////////////
+  const handleUserFollow = async action => {
     const res = await fetch(`/users/${user._id}/${action}`, {
       method: "PUT",
       body: JSON.stringify({
@@ -22,18 +22,18 @@ const UserInfo = ({ user }) => {
       }
     });
     const data = await res.json();
-    console.log("seen", data);
   };
 
   const handleUnfollow = async () => {
-    await testFunction("unfollow");
+    await handleUserFollow("unfollow");
     setUpdateCurrentUser(true);
   };
 
   const handleFollow = async () => {
-    await testFunction("follow");
+    await handleUserFollow("follow");
     setUpdateCurrentUser(true);
   };
+  /////////////////////////////////////////////
 
   return user && appUser ? (
     <User>

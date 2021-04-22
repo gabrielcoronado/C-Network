@@ -12,8 +12,8 @@ export const TrendingWrapper = styled.div`
   flex-direction: column;
 `;
 
-export const RankWrapper = styled.div`
-  margin: 0 auto;
+export const Div = styled.div`
+  margin-left: 25px;
 `;
 
 export const User = styled.div`

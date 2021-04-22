@@ -5,12 +5,10 @@ import {
   Wrapper,
   TrendingWrapper,
   SearchWrapper,
-  RankWrapper
+  Div
 } from "./styling/FeedStyles";
 import { Button } from "./styling/HomepageStyles";
 import { useHistory } from "react-router-dom";
-
-// import profile from "../PaiMei.jpeg";
 import SearchBar from "./SearchBar";
 import Trending from "./Trending";
 import Loading from "./Loading";
@@ -30,7 +28,6 @@ const Profile = () => {
   useEffect(() => {
     //Including the currentUser to get a complete feed
     if (currentUser && currentUser.following) {
-      // console.log("IF CURRENT-USER");
       const reviewersId = currentUser.following.concat([currentUser._id]);
 
       fetch(`/reviews?reviewersId=${reviewersId.join(",")}`, {
@@ -41,7 +38,6 @@ const Profile = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          // console.log("reviews", data.data);
           setReviews(data.data);
         })
       );
@@ -50,10 +46,12 @@ const Profile = () => {
 
   return currentUser ? (
     <Wrapper className="wrapper">
-      <RankWrapper>
+      <div>
         <Ranking />
-        <Button onClick={() => toRandomMovie()}>Random Movie Picker</Button>
-      </RankWrapper>
+        <Div>
+          <Button onClick={() => toRandomMovie()}>Random Movie Picker</Button>
+        </Div>
+      </div>
       <Reviews user={currentUser} reviews={reviews} />
       <TrendingWrapper>
         <SearchWrapper>

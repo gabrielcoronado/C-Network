@@ -26,7 +26,6 @@ const MovieWrapper = () => {
       }
     });
     const data = await res.json();
-    console.log("blacklisted", data);
   };
 
   const handleSeen = async () => {
@@ -41,7 +40,6 @@ const MovieWrapper = () => {
       }
     });
     const data = await res.json();
-    console.log("seen", data);
   };
 
   useEffect(() => {
@@ -52,7 +50,6 @@ const MovieWrapper = () => {
       }
     }).then(res =>
       res.json().then(data => {
-        // console.log("movie", data.data);
         setMovie(data.data);
       })
     );

@@ -44,13 +44,11 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         })
       })
         .then(res => {
-          // console.log("RES", res);
           return res.json();
         })
         .then(json => {
           setAppUser(json.data);
           setCurrentUser(json.data);
-          console.log("JSON", json.data);
           setMessage(json.message);
         });
     }
@@ -66,7 +64,6 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("user", data.data);
           setCurrentUser(data.data);
           setAppUser(data.data);
           setUpdateCurrentUser(false);
@@ -84,7 +81,6 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
       }
     }).then(res =>
       res.json().then(data => {
-        // console.log("raking", data.data);
         setRanking(data.data);
       })
     );

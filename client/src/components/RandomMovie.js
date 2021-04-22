@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Wrapper, Button, MovieResult } from "./styling/RandomMovieStyles";
+import {
+  Wrapper,
+  Button,
+  MovieResult,
+  Div,
+  H1
+} from "./styling/RandomMovieStyles";
 import { UserContext } from "./providers/UserProvider";
 import FilterBar from "./FilterBar";
 import Loading from "./Loading";
@@ -32,7 +38,6 @@ const RandomMovie = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("random", data.data);
           setRandom(data.data);
           setGenerateRandom(false);
         })
@@ -48,9 +53,13 @@ const RandomMovie = () => {
         selectedGenres={selectedGenres}
       />
       <MovieResult>
-        <h3>Random Movie Picker</h3>
+        <Div>
+          <H1>Random Movie Picker</H1>
+        </Div>
         {random ? <Movie size="small" movieData={random} /> : <Loading />}
-        <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>
+        <Div>
+          <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>
+        </Div>
       </MovieResult>
     </Wrapper>
   );

@@ -33,16 +33,4 @@ export const Button = styled.span`
   cursor: pointer;
   outline: none;
   background-color: transparent;
-
-  :hover,
-  :active {
-    background: linear-gradient(
-      90deg,
-      rgb(253, 36, 29) 5%,
-      rgb(255, 128, 55) 100%
-    );
-    color: whitesmoke;
-    outline: 0.5px solid
-      linear-gradient(90deg, rgb(253, 36, 29) 5%, rgb(255, 128, 55) 100%);
-  }
 `;

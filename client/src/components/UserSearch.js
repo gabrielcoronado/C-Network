@@ -1,8 +1,18 @@
 import React, { useState, useEffect } from "react";
-import styled from "styled-components";
 import { BiSearch } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
 import UserImg from "./assets/placeholderImg.png";
+import {
+  Wrapper,
+  UserInfo,
+  SearchWrapper,
+  User,
+  UserWrapper,
+  Search,
+  ProfilePic,
+  Input
+} from "./styling/UserSearchStyles";
+
 const UserSearch = () => {
   const [userSearchInput, setUserSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState();
@@ -85,63 +95,4 @@ const UserSearch = () => {
   );
 };
 
-const Wrapper = styled.div`
-  margin: 0 auto;
-`;
-
-const UserInfo = styled.div`
-  padding-left: 20px;
-`;
-
-const SearchWrapper = styled.div`
-  border: 1px solid gray;
-  border-radius: 15px;
-  padding-right: 10px;
-  position: relative;
-  margin: 30px auto;
-  display: flex;
-  height: 40px;
-  width: 431px;
-`;
-
-const User = styled.div`
-  display: flex;
-`;
-
-const UserWrapper = styled.div`
-  margin: 0 auto;
-  text-align: center;
-`;
-
-const Search = styled.div`
-  background: transparent;
-  position: absolute;
-  cursor: pointer;
-  font-size: 16px;
-  outline: none;
-  color: white;
-  border: none;
-  height: 40px;
-  width: 40px;
-  color: gray;
-  left: 415px;
-  top: 8px;
-`;
-
-const ProfilePic = styled.img`
-  border-radius: 50%;
-  height: 50px;
-`;
-
-const Input = styled.input`
-  background: transparent;
-  border: 1px solid gray;
-  border-radius: 10px;
-  padding: 10px 20px;
-  font-size: 15px;
-  outline: none;
-  width: 200px;
-  border: none;
-  color: gray;
-`;
 export default UserSearch;

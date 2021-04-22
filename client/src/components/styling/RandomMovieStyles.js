@@ -2,16 +2,14 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   padding: 15px 80px;
-  /* margin: 0 auto; */
   height: 100vh;
-  /* justify-content: center; */
-  /* align-items: center; */
 `;
 
 export const Button = styled.button`
   width: 180px;
   height: 50px;
   border-radius: 10px;
+  outline: none;
   margin: 40px auto;
   cursor: pointer;
   background: linear-gradient(
@@ -24,4 +22,13 @@ export const Button = styled.button`
 export const MovieResult = styled.div`
   justify-content: center;
   width: 100%;
+`;
+
+export const H1 = styled.h1`
+  border-bottom: 1px solid gray;
+  padding-bottom: 25px;
+`;
+
+export const Div = styled.div`
+  text-align: center;
 `;

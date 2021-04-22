@@ -4,7 +4,7 @@ import { GiRoundStar } from "react-icons/gi";
 import { ImBlocked } from "react-icons/im";
 import { FaHeart } from "react-icons/fa";
 import ReactTooltip from "react-tooltip";
-
+import logo from "./assets/newlogo2.svg";
 import {
   Poster,
   MovieWrapper,
@@ -40,7 +40,11 @@ const Movie = ({
   return movieData ? (
     <MovieWrapper>
       <ReactTooltip place="bottom" backgroundColor="white" textColor="black" />
-      <Poster src={base_url + posterSize + movieData.poster_path} />
+      {movieData && movieData.poster_path ? (
+        <Poster src={base_url + posterSize + movieData.poster_path} />
+      ) : (
+        <Poster src={logo} style={{ height: "400px", width: "266px" }} />
+      )}
       <MovieInfo>
         <H1>{movieData.title}</H1>
         {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}

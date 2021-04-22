@@ -20,6 +20,14 @@ export const ReviewsWrapper = styled.div`
   width: 40vw;
 `;
 
+export const TitleWrapper = styled.div`
+  background: gray;
+  border: 1px solid gray;
+  text-align: center;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+`;
+
 export const Date = styled.div`
   font-size: 11px;
   padding: 10px 0;
@@ -35,6 +43,7 @@ export const Img = styled.img`
 
 export const Poster = styled.img`
   border-radius: 5px;
+  cursor: pointer;
   height: 180px;
 `;
 
@@ -46,6 +55,7 @@ export const User = styled.div`
 
 export const Title = styled.span`
   font-size: 25px;
+  cursor: pointer;
 `;
 
 export const Tag = styled.p`
