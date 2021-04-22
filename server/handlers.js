@@ -69,7 +69,6 @@ const createUser = async (req, res) => {
 
     appUsersRef.push(req.body).then(async () => {
       const user = await createNewUser(req.body);
-
       res.status(200).json({
         status: 200,
         data: user,
@@ -262,7 +261,10 @@ const getRandomMovie = async (req, res) => {
     const randomMovie = whitelistedMovies[randomMovieIndex];
 
     //////// GET OBJECT WITH SELECTED RANDOM MOVIE DATA /////////
-    const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id);
+
+    const fullMovieObject = randomMovie
+      ? await getMovieByIdFromAPI(randomMovie.id)
+      : {};
 
     handleMovieDbResponse(fullMovieObject, res);
   } catch (err) {
@@ -372,7 +374,7 @@ const createNewUser = async ({ email, displayName, photoURL }) => {
   console.log("Disconnected!");
 
   if (result) {
-    return result;
+    return result.ops[0];
   } else {
     console.log("error in createNewUser", result);
     return null;
@@ -417,6 +419,25 @@ const unfollowUser = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
+//////////// UN-BLACKLIST /////////////
+
+const whitelistMovie = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const movieToWhitelist = req.params.id;
+
+  const { currentUser } = req.body;
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $pullAll: { blacklist: [movieToWhitelist] } }
+    );
+  console.log(`whitelisted ${movieToWhitelist}`);
+  handleResult(client, result, req.body, res);
+};
+
 /// BLACKLIST A MOVIE ///
 
 const blacklistMovie = async (req, res) => {
@@ -452,6 +473,25 @@ const markMovieAsSeen = async (req, res) => {
       { $addToSet: { seen: seenMovie } }
     );
 
+  handleResult(client, result, req.body, res);
+};
+
+//////// UNSEE MOVIE //////
+
+const unseeMovie = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const movieToUnsee = req.params.id;
+
+  const { currentUser } = req.body;
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $pullAll: { seen: [movieToUnsee] } }
+    );
+  console.log(`whitelisted ${movieToUnsee}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -601,5 +641,7 @@ module.exports = {
   searchUsers,
   getUserRanking,
   getAllReviews,
-  getRandomMovie
+  getRandomMovie,
+  whitelistMovie,
+  unseeMovie
 };

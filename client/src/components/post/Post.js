@@ -5,7 +5,7 @@ import Rating from "./Rating";
 const Post = ({ currentUser, id, hidden }) => {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
-
+  const [postMessage, setPostMessage] = useState(false);
   const handleComment = ev => {
     setComment(ev.target.value.toLowerCase());
   };
@@ -29,6 +29,7 @@ const Post = ({ currentUser, id, hidden }) => {
       }
     });
     const data = await res.json();
+    setPostMessage(true);
   };
 
   return !hidden ? (
@@ -49,6 +50,7 @@ const Post = ({ currentUser, id, hidden }) => {
       >
         Post Review
       </Button>
+      {postMessage ? <p>Review Submitted!</p> : null}
     </PostWrapper>
   ) : null;
 };

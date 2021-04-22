@@ -52,7 +52,7 @@ function App() {
 }
 
 const Wrapper = styled.div`
-  position: relative;
+  /* position: relative; */
   /* display: grid;
   grid-template-areas:
     "header header header header header header"
@@ -61,10 +61,10 @@ const Wrapper = styled.div`
 `;
 
 const NavBarGridWrapper = styled.div`
-  grid-area: header;
+  /* grid-area: header; */
 `;
 const MainPageGridWrapper = styled.div`
-  grid-area: main;
+  /* grid-area: main; */
 `;
 
 export default App;

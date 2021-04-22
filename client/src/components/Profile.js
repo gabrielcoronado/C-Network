@@ -70,7 +70,7 @@ const Profile = () => {
                 }
                 onClick={() => setSelectedTab("seen")}
               >
-                Seen
+                Favorite
               </Button>
             </>
           ) : null}

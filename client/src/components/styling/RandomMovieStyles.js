@@ -2,7 +2,9 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   padding: 15px 80px;
-  height: 100vh;
+  height: 80vh;
+  max-width: 1024px;
+  margin: 0 auto;
 `;
 
 export const Button = styled.button`
@@ -21,14 +23,17 @@ export const Button = styled.button`
 
 export const MovieResult = styled.div`
   justify-content: center;
+  padding-top: 30px;
   width: 100%;
 `;
 
 export const H1 = styled.h1`
-  border-bottom: 1px solid gray;
-  padding-bottom: 25px;
+  padding-bottom: 15px;
+  margin-top: -5px;
 `;
 
 export const Div = styled.div`
   text-align: center;
+  padding-bottom: 25px;
+  border-bottom: 1px solid gray;
 `;

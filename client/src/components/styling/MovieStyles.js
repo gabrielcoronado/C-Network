@@ -16,6 +16,11 @@ export const Poster = styled.img`
   height: 450px;
 `;
 
+export const Error = styled.div`
+  justify-content: center;
+  /* text-align: center; */
+`;
+
 export const Background = styled.div`
   height: 400px;
 `;

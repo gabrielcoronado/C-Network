@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const FilterWrapper = styled.div`
   margin: 0 40px;
-  width: 80vw;
+  width: 800px;
   display: flex;
   margin: 0 auto;
   overflow: overlay;
@@ -15,8 +15,10 @@ export const FilterWrapper = styled.div`
 `;
 
 export const Genres = styled.div`
-  padding: 10px;
+  width: 80vw;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 export const Button = styled.span`
