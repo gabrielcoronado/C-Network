@@ -420,6 +420,25 @@ const unfollowUser = async (req, res) => {
   handleResult(client, result, req.body, res);
 };
 
+//////////// UN-BLACKLIST /////////////
+
+const whitelistMovie = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const movieToWhitelist = req.params.id;
+
+  const { currentUser } = req.body;
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $pullAll: { blacklist: [movieToWhitelist] } }
+    );
+  console.log(`whitelisted ${movieToWhitelist}`);
+  handleResult(client, result, req.body, res);
+};
+
 /// BLACKLIST A MOVIE ///
 
 const blacklistMovie = async (req, res) => {
@@ -455,6 +474,25 @@ const markMovieAsSeen = async (req, res) => {
       { $addToSet: { seen: seenMovie } }
     );
 
+  handleResult(client, result, req.body, res);
+};
+
+//////// UNSEE MOVIE //////
+
+const unseeMovie = async (req, res) => {
+  const { client, db } = await dbConnect();
+
+  const movieToUnsee = req.params.id;
+
+  const { currentUser } = req.body;
+
+  const result = await db
+    .collection("users")
+    .updateOne(
+      { _id: ObjectID(currentUser._id) },
+      { $pullAll: { seen: [movieToUnsee] } }
+    );
+  console.log(`whitelisted ${movieToUnsee}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -604,5 +642,7 @@ module.exports = {
   searchUsers,
   getUserRanking,
   getAllReviews,
-  getRandomMovie
+  getRandomMovie,
+  whitelistMovie,
+  unseeMovie
 };

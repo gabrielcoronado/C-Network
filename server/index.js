@@ -22,7 +22,9 @@ const {
   createUser,
   searchUsers,
   getUserRanking,
-  getAllReviews
+  getAllReviews,
+  whitelistMovie,
+  unseeMovie
 } = require("./handlers");
 
 const PORT = 4000;
@@ -31,6 +33,14 @@ express()
   .use(cors())
   .use(express.json())
   .use(morgan("tiny"))
+
+  .put(`/movies/:id/blacklist`, blacklistMovie)
+
+  .put(`/movies/:id/whitelist`, whitelistMovie)
+
+  .put(`/movies/:id/seen`, markMovieAsSeen)
+
+  .put(`/movies/:id/unsee`, unseeMovie)
 
   .get(`/trending/day`, dailyTrend)
 
@@ -80,9 +90,5 @@ express()
   .post("/login", createUser)
 
   //////////FIREBASE///////
-
-  .put(`/movies/:id/blacklist`, blacklistMovie)
-
-  .put(`/movies/:id/seen`, markMovieAsSeen)
 
   .listen(PORT, () => console.info(`Listening on port ${PORT}`));

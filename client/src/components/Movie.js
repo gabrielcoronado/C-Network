@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { UserContext } from "./providers/UserProvider";
 import { GoPrimitiveDot } from "react-icons/go";
 import { useHistory } from "react-router-dom";
 import { GiRoundStar } from "react-icons/gi";
@@ -21,17 +22,25 @@ import {
   Error
 } from "./styling/MovieStyles";
 
-const Movie = ({
-  movieData,
-  setHidden,
-  handleSeen,
-  handleBlacklist,
-  hidden,
-  hideReview
-}) => {
+const Movie = ({ movieData, setHidden, hidden, hideReview }) => {
+  const { currentUser, setUpdateCurrentUser } = useContext(UserContext);
   const history = useHistory();
   const base_url = `https://image.tmdb.org`;
   const posterSize = `/t/p/w500`;
+
+  const activeStyle = {
+    color: "red"
+    // "linear-gradient(90deg,rgb(253, 36, 29) 5%,rgb(255, 128, 55) 100%)"
+  };
+
+  const isFavorite = id => {
+    return currentUser && currentUser.seen.includes(`${id}`);
+  };
+
+  const isBlacklisted = id => {
+    const blacklist = currentUser && currentUser.blacklist.includes(`${id}`);
+    return blacklist;
+  };
 
   const time_converter = num => {
     let hours = Math.floor(num / 60);
@@ -41,6 +50,38 @@ const Movie = ({
 
   const singleMovieHandle = id => {
     history.push(`/movies/${id}`);
+  };
+
+  const handleBlacklist = async (movieId, isBlacklistActive) => {
+    const action = isBlacklistActive ? "whitelist" : "blacklist";
+    const res = await fetch(`/movies/${movieId}/${action}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    setUpdateCurrentUser(true);
+  };
+
+  const handleSeen = async (movieId, isSeen) => {
+    const action = isSeen ? "unsee" : "seen";
+    const res = await fetch(`/movies/${movieId}/${action}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        currentUser
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json"
+      }
+    });
+    const data = await res.json();
+    setUpdateCurrentUser(true);
   };
 
   return movieData ? (
@@ -95,13 +136,20 @@ const Movie = ({
           <>
             <Button
               data-tip="Mark as favorite"
-              onClick={() => handleSeen && handleSeen()}
+              onClick={() =>
+                handleSeen && handleSeen(movieData.id, isFavorite(movieData.id))
+              }
+              style={isFavorite(movieData.id) ? activeStyle : {}}
             >
               <FaHeart size={20} />
             </Button>
             <Button
               data-tip="Add to blacklist"
-              onClick={() => handleBlacklist && handleBlacklist()}
+              onClick={() =>
+                handleBlacklist &&
+                handleBlacklist(movieData.id, isBlacklisted(movieData.id))
+              }
+              style={isBlacklisted(movieData.id) ? activeStyle : {}}
             >
               <ImBlocked size={20} />
             </Button>

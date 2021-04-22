@@ -14,34 +14,6 @@ const MovieWrapper = () => {
 
   const { id } = useParams();
 
-  const handleBlacklist = async () => {
-    const res = await fetch(`/movies/${id}/blacklist`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-  };
-
-  const handleSeen = async () => {
-    const res = await fetch(`/movies/${id}/seen`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-  };
-
   useEffect(() => {
     fetch(`http://localhost:4000/movies/${id}`, {
       headers: {
@@ -57,14 +29,7 @@ const MovieWrapper = () => {
 
   return movie ? (
     <Wrapper>
-      <Movie
-        style={{ opacity: "1" }}
-        movieData={movie}
-        handleSeen={handleSeen}
-        handleBlacklist={handleBlacklist}
-        setHidden={setHidden}
-        hidden={hidden}
-      />
+      <Movie movieData={movie} setHidden={setHidden} hidden={hidden} />
       <Post hidden={hidden} currentUser={currentUser} id={id} />
     </Wrapper>
   ) : (

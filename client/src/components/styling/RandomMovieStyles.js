@@ -3,6 +3,8 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   padding: 15px 80px;
   height: 80vh;
+  max-width: 1024px;
+  margin: 0 auto;
 `;
 
 export const Button = styled.button`
