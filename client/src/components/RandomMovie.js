@@ -58,7 +58,11 @@ const RandomMovie = () => {
         />
       </Div>
       <MovieResult>
-        {random ? <Movie size="small" movieData={random} /> : <Loading />}
+        {random ? (
+          <Movie hideReview size="small" movieData={random} />
+        ) : (
+          <Loading />
+        )}
         <Div>
           <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>
         </Div>

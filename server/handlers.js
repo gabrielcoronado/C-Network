@@ -262,7 +262,10 @@ const getRandomMovie = async (req, res) => {
     const randomMovie = whitelistedMovies[randomMovieIndex];
 
     //////// GET OBJECT WITH SELECTED RANDOM MOVIE DATA /////////
-    const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id);
+
+    const fullMovieObject = randomMovie
+      ? await getMovieByIdFromAPI(randomMovie.id)
+      : {};
 
     handleMovieDbResponse(fullMovieObject, res);
   } catch (err) {

@@ -5,7 +5,7 @@ import { GiRoundStar } from "react-icons/gi";
 import { ImBlocked } from "react-icons/im";
 import { FaHeart } from "react-icons/fa";
 import ReactTooltip from "react-tooltip";
-import logo from "./assets/newlogo2.svg";
+import logo from "./assets/error.svg";
 import {
   Poster,
   MovieWrapper,
@@ -17,7 +17,8 @@ import {
   Overview,
   MovieInfo,
   Genre,
-  Runtime
+  Runtime,
+  Error
 } from "./styling/MovieStyles";
 
 const Movie = ({
@@ -25,7 +26,8 @@ const Movie = ({
   setHidden,
   handleSeen,
   handleBlacklist,
-  hidden
+  hidden,
+  hideReview
 }) => {
   const history = useHistory();
   const base_url = `https://image.tmdb.org`;
@@ -53,7 +55,7 @@ const Movie = ({
         <Poster
           onClick={() => singleMovieHandle(movieData.id)}
           src={logo}
-          style={{ height: "400px", width: "266px" }}
+          style={{ height: "400px", width: "266px", opacity: "0.5" }}
         />
       )}
       <MovieInfo>
@@ -61,12 +63,10 @@ const Movie = ({
           {movieData.title}
         </H1>
         <Details>
-          <div>{movieData.release_date}</div>
+          <div>{movieData.release_date || ""}</div>
           <Lang>
-            (
             {movieData.original_language &&
-              movieData.original_language.toUpperCase()}
-            )
+              `(${movieData.original_language.toUpperCase()})`}
           </Lang>
           <GoPrimitiveDot size={11} />
           {movieData.genres &&
@@ -79,31 +79,44 @@ const Movie = ({
               );
             })}
           <GoPrimitiveDot size={11} />
-          <Runtime>{time_converter(movieData.runtime)}</Runtime>
+          <Runtime>
+            {movieData.runtime ? time_converter(movieData.runtime) : ""}
+          </Runtime>
         </Details>
-        <Button
-          data-tip="Create a review!"
-          onClick={() => setHidden && setHidden(!hidden)}
-        >
-          <GiRoundStar size={20} />
-        </Button>
-        <Button
-          data-tip="Mark as favorite"
-          onClick={() => handleSeen && handleSeen()}
-        >
-          <FaHeart size={20} />
-        </Button>
-        <Button
-          data-tip="Add to blacklist"
-          onClick={() => handleBlacklist && handleBlacklist()}
-        >
-          <ImBlocked size={20} />
-        </Button>
-        <Tagline>
-          <i>{movieData.tagline}</i>
-        </Tagline>
-        <h3>Overview:</h3>
-        <Overview>{movieData.overview}</Overview>
+        {hideReview ? null : (
+          <Button
+            data-tip="Create a review!"
+            onClick={() => setHidden && setHidden(!hidden)}
+          >
+            <GiRoundStar size={20} />
+          </Button>
+        )}
+        {movieData.id ? (
+          <>
+            <Button
+              data-tip="Mark as favorite"
+              onClick={() => handleSeen && handleSeen()}
+            >
+              <FaHeart size={20} />
+            </Button>
+            <Button
+              data-tip="Add to blacklist"
+              onClick={() => handleBlacklist && handleBlacklist()}
+            >
+              <ImBlocked size={20} />
+            </Button>
+            <Tagline>
+              <i>{movieData.tagline}</i>
+            </Tagline>
+            <h3>Overview:</h3>
+            <Overview>{movieData.overview}</Overview>
+          </>
+        ) : (
+          <Error>
+            <h1>Uh oh! There were no movies found.</h1>
+            <h2>Try another filter. 🥸</h2>
+          </Error>
+        )}
       </MovieInfo>
     </MovieWrapper>
   ) : null;

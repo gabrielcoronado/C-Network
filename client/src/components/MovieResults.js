@@ -2,7 +2,7 @@ import React, { useState, useEffect, useContext } from "react";
 import { MovieContext } from "./providers/MovieProvider";
 import { UserContext } from "./providers/UserProvider";
 import { useHistory } from "react-router-dom";
-import logo from "./assets/newlogo2.svg";
+import logo from "./assets/error.svg";
 import SearchBar from "./SearchBar";
 import Loading from "./Loading";
 import {
