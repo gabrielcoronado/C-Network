@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const FilterWrapper = styled.div`
   margin: 0 40px;
-  width: 95vw;
+  width: 80vw;
   display: flex;
-  margin: 40px auto 0 auto;
+  margin: 0 auto;
   overflow: overlay;
   flex-direction: row;
   overflow-x: auto;
@@ -33,16 +33,4 @@ export const Button = styled.span`
   cursor: pointer;
   outline: none;
   background-color: transparent;
-
-  :hover,
-  :active {
-    background: linear-gradient(
-      90deg,
-      rgb(253, 36, 29) 5%,
-      rgb(255, 128, 55) 100%
-    );
-    color: whitesmoke;
-    outline: 0.5px solid
-      linear-gradient(90deg, rgb(253, 36, 29) 5%, rgb(255, 128, 55) 100%);
-  }
 `;

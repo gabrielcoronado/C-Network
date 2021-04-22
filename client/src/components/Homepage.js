@@ -4,7 +4,6 @@ import { UserContext } from "./providers/UserProvider";
 import { useHistory } from "react-router-dom";
 import SearchBar from "./SearchBar";
 import Logo from "./assets/newlogo2.svg";
-// require("dotenv").config();
 
 const Homepage = () => {
   const { searchSubmitted, setSearchSubmitted, searchInput } = useContext(

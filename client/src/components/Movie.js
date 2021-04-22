@@ -1,14 +1,11 @@
 import React from "react";
 import { GoPrimitiveDot } from "react-icons/go";
 import { GiRoundStar } from "react-icons/gi";
-import { useParams } from "react-router-dom";
 import { ImBlocked } from "react-icons/im";
-import { withRouter } from "react-router";
-import { FaRegEye } from "react-icons/fa";
-import Loading from "./Loading";
-import Post from "./post/Post";
+import { FaHeart } from "react-icons/fa";
+import ReactTooltip from "react-tooltip";
+import logo from "./assets/newlogo2.svg";
 import {
-  Wrapper,
   Poster,
   MovieWrapper,
   H1,
@@ -23,6 +20,7 @@ import {
 } from "./styling/MovieStyles";
 
 const Movie = ({
+  size,
   movieData,
   setHidden,
   handleSeen,
@@ -41,7 +39,12 @@ const Movie = ({
 
   return movieData ? (
     <MovieWrapper>
-      <Poster src={base_url + posterSize + movieData.poster_path} />
+      <ReactTooltip place="bottom" backgroundColor="white" textColor="black" />
+      {movieData && movieData.poster_path ? (
+        <Poster src={base_url + posterSize + movieData.poster_path} />
+      ) : (
+        <Poster src={logo} style={{ height: "400px", width: "266px" }} />
+      )}
       <MovieInfo>
         <H1>{movieData.title}</H1>
         {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}
@@ -67,13 +70,22 @@ const Movie = ({
           <Runtime>{time_converter(movieData.runtime)}</Runtime>
         </Details>
         {/* UP UNTIL HERE */}
-        <Button onClick={() => setHidden && setHidden(!hidden)}>
+        <Button
+          data-tip="Create a review!"
+          onClick={() => setHidden && setHidden(!hidden)}
+        >
           <GiRoundStar size={20} />
         </Button>
-        <Button onClick={() => handleSeen && handleSeen()}>
-          <FaRegEye size={20} />
+        <Button
+          data-tip="Mark as favorite"
+          onClick={() => handleSeen && handleSeen()}
+        >
+          <FaHeart size={20} />
         </Button>
-        <Button onClick={() => handleBlacklist && handleBlacklist()}>
+        <Button
+          data-tip="Add to blacklist"
+          onClick={() => handleBlacklist && handleBlacklist()}
+        >
           <ImBlocked size={20} />
         </Button>
         <Tagline>

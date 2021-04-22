@@ -57,7 +57,6 @@ const getUser = async email => {
 
 const createUser = async (req, res) => {
   const returningUser = await getUser(req.body.email);
-  console.log(returningUser);
 
   if (returningUser) {
     const user = await getUserFromDB({ email: req.body.email });
@@ -104,7 +103,6 @@ const handleResult = (client, result, data, res) => {
 };
 
 const handleMovieDbResponse = (data, res) => {
-  // console.log("data", data);
   data
     ? res.status(200).json({ status: 200, data: data })
     : res.status(400).json({ status: 400, message: "no data" });
@@ -120,7 +118,6 @@ const getUserFromDB = async ({ email, userId }) => {
 
     const match = email ? { email } : { _id: ObjectID(userId) };
 
-    console.log("email", email);
     //aggregate lets us use the lookup which allows us to match/import data from other collections
     const result = await db
       .collection("users")
@@ -144,13 +141,11 @@ const getUserFromDB = async ({ email, userId }) => {
         { $match: match }
       ])
       .toArray();
-    console.log("result", result);
 
     client.close();
     console.log("Disconnected!");
 
     if (result) {
-      console.log("result", result);
       return result[0];
     } else {
       return null;
@@ -205,12 +200,12 @@ const getMovieByIdFromAPI = async id => {
   const fetch_response = await fetch(api_url);
   return fetch_response.json();
 };
-//To Do
+
+////////////// GET MOVIES BY QUERY /////////////////
 
 const getMovieByQuery = async (req, res) => {
   try {
     const { query } = req.params;
-    console.log("query", query);
 
     const api_url = `https://api.themoviedb.org/3/search/movie?api_key=${key}&query=${query}`;
 
@@ -222,6 +217,10 @@ const getMovieByQuery = async (req, res) => {
     console.log("error", err);
   }
 };
+
+////////////////////////////////////////////////////
+
+///////////////// RANDOM MOVIE /////////////////////
 
 const getRandomInt = (min, max) => {
   min = Math.ceil(min);
@@ -235,30 +234,34 @@ const getRandomMovie = async (req, res) => {
     const genreQuery = genre ? `with_genres=${genre}` : "";
     const currentUserId = req.headers["current-user-id"];
     const user = await getUserFromDB({ userId: currentUserId });
-    // console.log("user", user);
-    console.log("query", genreQuery);
 
+    /// GET INITIAL FIRST RANDOM MOVIE ///
     const firstResponse = await getMoviesFromAPI(genreQuery, 1);
-    // console.log("firstResponse", firstResponse);
+
+    ///// GET TOTAL NUMBER OF PAGES /////
     const totalPages = firstResponse["total_pages"];
-    // console.log("totalPages", totalPages);
+
+    ////////// GET RANDOM PAGE ///////////
     const randomPage = getRandomInt(1, totalPages);
-    // console.log("randomPage", randomPage);
+
+    ///// GET MOVIES ON A RANDOM PAGE ////
     const movies = await getMoviesFromAPI(genreQuery, randomPage);
-    // console.log("movies", movies);
+
+    //// REMOVING BLACKLISTED MOVIES FROM RESULTS ////
     const whitelistedMovies = movies.results.filter(
       movie => !user.blacklist.includes(movie.id)
     );
 
+    ///////////// MOVIES LEFT ///////////////
     const totalMovies = whitelistedMovies.length;
-    // console.log("totalMovies", totalMovies);
 
+    ///////// RANDOM MOVIE INDEX ///////////
     const randomMovieIndex = getRandomInt(0, totalMovies - 1);
-    // console.log("randomMovieIndex", randomMovieIndex);
 
+    //////////// GET RANDOM MOVIE //////////////
     const randomMovie = whitelistedMovies[randomMovieIndex];
-    // console.log("randomMovie", randomMovie);
 
+    //////// GET OBJECT WITH SELECTED RANDOM MOVIE DATA /////////
     const fullMovieObject = await getMovieByIdFromAPI(randomMovie.id);
 
     handleMovieDbResponse(fullMovieObject, res);
@@ -272,7 +275,6 @@ const getMoviesFromAPI = async (query, pageNumber) => {
     const constantQuery = query ? `&${query}` : "";
     const api_url = `https://api.themoviedb.org/3/discover/movie?api_key=${key}&language=en-US&page=${pageNumber}&include_adult=false${constantQuery}`;
 
-    console.log("api_url", api_url);
     const fetch_response = await fetch(api_url);
     const data = await fetch_response.json();
 
@@ -282,14 +284,15 @@ const getMoviesFromAPI = async (query, pageNumber) => {
   }
 };
 
-//GET ALL REVIEWS BY USER ///
+//////////////////////////////////////////////////////////
+
+//////////////GET ALL REVIEWS BY USER ////////////////////
 
 const getReviewsByUser = async (req, res) => {
   try {
     const { client, db } = await dbConnect();
     const { reviewersId } = req.query;
 
-    console.log("query", req.query);
     //aggregate lets us use the lookup which allows us to match/import data from other collections
     const result = await db
       .collection("reviews")
@@ -391,7 +394,7 @@ const followUser = async (req, res) => {
       { _id: ObjectID(currentUser._id) },
       { $addToSet: { following: ObjectID(userToFollowId) } }
     );
-
+  console.log(`followed ${userToFollowId}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -410,7 +413,7 @@ const unfollowUser = async (req, res) => {
       { _id: ObjectID(currentUser._id) },
       { $pullAll: { following: [ObjectID(userToUnfollowId)] } }
     );
-
+  console.log(`unfollowed ${userToUnfollowId}`);
   handleResult(client, result, req.body, res);
 };
 
@@ -422,7 +425,6 @@ const blacklistMovie = async (req, res) => {
   const movieToBlacklist = req.params.id;
 
   const { currentUser } = req.body;
-  console.log("currentUser", currentUser);
 
   const result = await db
     .collection("users")
@@ -464,7 +466,7 @@ const getUserData = async (req, res) => {
     const user = await getUserFromDB({ userId });
 
     if (user) {
-      if (user._id === currentUserId) {
+      if (userId === currentUserId) {
         res.status(201).json({ status: 201, data: user });
       } else {
         const { photoURL, name, reviewsObject, _id } = user;
@@ -485,7 +487,6 @@ const getUserData = async (req, res) => {
 };
 
 const searchUsers = async (req, res) => {
-  console.log("se esta metiendo");
   try {
     const { client, db } = await dbConnect();
 
@@ -507,8 +508,6 @@ const searchUsers = async (req, res) => {
     });
 
     handleResult(client, users, req.query, res);
-
-    console.log("search result", users);
   } catch (err) {
     console.log(err.stack);
   }
@@ -541,7 +540,6 @@ const getUserRanking = async (req, res) => {
         return 0;
       }
     });
-    console.log("userRanking", userRanking);
 
     handleResult(client, userRanking, req.query, res);
   } catch (err) {
@@ -578,7 +576,6 @@ const getAllReviews = async (req, res) => {
         return 0;
       }
     });
-    console.log("userRanking", userRanking);
 
     handleResult(client, result, req.query, res);
   } catch (err) {

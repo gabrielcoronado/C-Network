@@ -29,7 +29,6 @@ const Post = ({ currentUser, id, hidden }) => {
       }
     });
     const data = await res.json();
-    console.log("seen", data);
   };
 
   return !hidden ? (

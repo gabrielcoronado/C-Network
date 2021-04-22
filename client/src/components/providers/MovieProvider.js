@@ -9,7 +9,7 @@ export const MovieProvider = ({ children }) => {
 
   //Fetching Daily Trends
   useEffect(() => {
-    fetch(`http://localhost:4000/trending/day`, {
+    fetch(`/trending/day`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
@@ -23,7 +23,7 @@ export const MovieProvider = ({ children }) => {
 
   //Fetching Weekly Trends
   useEffect(() => {
-    fetch(`http://localhost:4000/trending/week`, {
+    fetch(`/trending/week`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"

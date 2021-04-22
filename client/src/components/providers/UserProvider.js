@@ -22,21 +22,17 @@ const providers = {
 
 const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
   const [searchSubmitted, setSearchSubmitted] = useState(false);
-  const [searchInput, setSearchInput] = useState("");
-  const [currentUser, setCurrentUser] = useState(null);
   const [userSearchInput, setUserSearchInput] = useState("");
+  const [currentUser, setCurrentUser] = useState(null);
+  const [searchInput, setSearchInput] = useState("");
+  const [updateCurrentUser, setUpdateCurrentUser] = useState(false);
   const [appUser, setAppUser] = useState({});
   const [message, setMessage] = useState("");
   const [ranking, setRanking] = useState();
 
-  const handleSignOut = () => {
-    signOut();
-    setAppUser({});
-  };
-
   useEffect(() => {
     if (user) {
-      fetch(`http://localhost:4000/login`, {
+      fetch(`/login`, {
         method: "post",
         headers: {
           "Content-Type": "application/json"
@@ -48,60 +44,43 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         })
       })
         .then(res => {
-          // console.log("RES", res);
           return res.json();
         })
         .then(json => {
           setAppUser(json.data);
           setCurrentUser(json.data);
-          console.log("JSON", json.data);
           setMessage(json.message);
         });
     }
   }, [user]);
 
-  const handleFollow = async id => {
-    console.log("providerID", id);
-    const res = await fetch(`http://localhost:4000/users/${id}/follow`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
-
-  const handleUnfollow = async id => {
-    console.log("id", id);
-    const res = await fetch(`http://localhost:4000/users/${id}/unfollow`, {
-      method: "PUT",
-      body: JSON.stringify({
-        currentUser
-      }),
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json"
-      }
-    });
-    const data = await res.json();
-    console.log("seen", data);
-  };
+  useEffect(() => {
+    if (currentUser && updateCurrentUser) {
+      fetch(`/users/${currentUser._id}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          "current-user-id": currentUser._id
+        }
+      }).then(res =>
+        res.json().then(data => {
+          setCurrentUser(data.data);
+          setAppUser(data.data);
+          setUpdateCurrentUser(false);
+        })
+      );
+    }
+  }, [updateCurrentUser]);
 
   ////// SET RANKING //////
   useEffect(() => {
-    fetch(`http://localhost:4000/users/ranking`, {
+    fetch(`/users/ranking`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       }
     }).then(res =>
       res.json().then(data => {
-        // console.log("raking", data.data);
         setRanking(data.data);
       })
     );
@@ -116,14 +95,14 @@ const UserProvider = ({ children, signInWithGoogle, signOut, user }) => {
         setSearchSubmitted,
         signInWithGoogle,
         appUser,
-        handleSignOut,
         message,
         currentUser,
         ranking,
-        handleUnfollow,
-        handleFollow,
         setUserSearchInput,
-        userSearchInput
+        userSearchInput,
+        setAppUser,
+        signOut,
+        setUpdateCurrentUser
       }}
     >
       {children}

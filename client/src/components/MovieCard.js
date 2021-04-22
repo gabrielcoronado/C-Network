@@ -9,7 +9,7 @@ const MovieCard = ({ movieid }) => {
   const posterSize = `/t/p/w500`;
 
   useEffect(() => {
-    fetch(`http://localhost:4000/movies/${movieid}`, {
+    fetch(`/movies/${movieid}`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"

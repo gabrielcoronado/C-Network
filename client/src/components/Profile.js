@@ -16,12 +16,12 @@ const Profile = () => {
   const { currentUser } = useContext(UserContext);
   const [user, setUser] = useState();
   const [selectedTab, setSelectedTab] = useState("feed");
-  const [statusChange, setStatusChange] = useState(true);
+
   const { id } = useParams();
 
   useEffect(() => {
     if (currentUser) {
-      fetch(`http://localhost:4000/users/${id}`, {
+      fetch(`/users/${id}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -29,13 +29,11 @@ const Profile = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("user", data.data);
           setUser(data.data);
-          setStatusChange(false);
         })
       );
     }
-  }, [statusChange]);
+  }, [id, currentUser]);
 
   return user ? (
     <ProfileWrapper>
@@ -52,40 +50,46 @@ const Profile = () => {
           >
             Feed
           </Button>
-          <Button
-            style={
-              selectedTab === "blacklist"
-                ? { borderBottom: "1px solid rgb(255, 128, 55)" }
-                : null
-            }
-            onClick={() => setSelectedTab("blacklist")}
-          >
-            Blacklist
-          </Button>
-          <Button
-            style={
-              selectedTab === "seen"
-                ? { borderBottom: "1px solid rgb(255, 128, 55)" }
-                : null
-            }
-            onClick={() => setSelectedTab("seen")}
-          >
-            Seen
-          </Button>
+          {user._id === currentUser._id ? (
+            <>
+              <Button
+                style={
+                  selectedTab === "blacklist"
+                    ? { borderBottom: "1px solid rgb(255, 128, 55)" }
+                    : null
+                }
+                onClick={() => setSelectedTab("blacklist")}
+              >
+                Blacklist
+              </Button>
+              <Button
+                style={
+                  selectedTab === "seen"
+                    ? { borderBottom: "1px solid rgb(255, 128, 55)" }
+                    : null
+                }
+                onClick={() => setSelectedTab("seen")}
+              >
+                Seen
+              </Button>
+            </>
+          ) : null}
         </Filters>
         {selectedTab === "feed" ? (
           <Reviews reviews={user.reviewsObject} user={user} />
         ) : selectedTab === "seen" ? (
           <CardWrapper>
-            {user.seen.map(movieid => {
-              return <MovieCard movieid={movieid} key={movieid} />;
-            })}
+            {user.seen &&
+              user.seen.map(movieid => {
+                return <MovieCard movieid={movieid} key={movieid} />;
+              })}
           </CardWrapper>
         ) : selectedTab === "blacklist" ? (
           <CardWrapper>
-            {user.blacklist.map(movieid => {
-              return <MovieCard movieid={movieid} key={movieid} />;
-            })}
+            {user.blacklist &&
+              user.blacklist.map(movieid => {
+                return <MovieCard movieid={movieid} key={movieid} />;
+              })}
           </CardWrapper>
         ) : null}
       </FeedWrapper>

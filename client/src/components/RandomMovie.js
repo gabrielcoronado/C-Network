@@ -1,5 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
-import { Wrapper, Button } from "./styling/RandomMovieStyles";
+import {
+  Wrapper,
+  Button,
+  MovieResult,
+  Div,
+  H1
+} from "./styling/RandomMovieStyles";
 import { UserContext } from "./providers/UserProvider";
 import FilterBar from "./FilterBar";
 import Loading from "./Loading";
@@ -24,7 +30,7 @@ const RandomMovie = () => {
       const query = selectedGenres.length
         ? `?genre=${selectedGenres.join(",")}`
         : "";
-      fetch(`http://localhost:4000/movies/random${query}`, {
+      fetch(`/movies/random${query}`, {
         headers: {
           "Content-Type": "application/json",
           Accept: "application/json",
@@ -32,7 +38,6 @@ const RandomMovie = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("random", data.data);
           setRandom(data.data);
           setGenerateRandom(false);
         })
@@ -47,9 +52,15 @@ const RandomMovie = () => {
         handleUnselect={handleUnselect}
         selectedGenres={selectedGenres}
       />
-      <div>Random Movie</div>
-      {random ? <Movie movieData={random} /> : <Loading />}
-      <Button onClick={() => setGenerateRandom(true)}>Search!</Button>
+      <MovieResult>
+        <Div>
+          <H1>Random Movie Picker</H1>
+        </Div>
+        {random ? <Movie size="small" movieData={random} /> : <Loading />}
+        <Div>
+          <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>
+        </Div>
+      </MovieResult>
     </Wrapper>
   );
 };

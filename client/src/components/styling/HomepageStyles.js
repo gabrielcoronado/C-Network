@@ -1,21 +1,21 @@
 import styled from "styled-components";
 
 export const Img = styled.img`
-  width: 200px;
   margin-bottom: 35px;
+  width: 200px;
 `;
 
 export const Wrapper = styled.div`
-  display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
   margin: 80px auto;
+  display: flex;
+  width: 100%;
 `;
 
 export const ButtonWrapper = styled.div`
-  display: flex;
   justify-content: space-between;
+  display: flex;
   width: 400px;
 `;
 
@@ -32,7 +32,6 @@ export const Button = styled.button`
   outline: none;
   border: none;
   width: 180px;
-  /* width: 250px; */
   height: 50px;
   color: white;
 `;

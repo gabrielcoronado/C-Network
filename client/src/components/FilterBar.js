@@ -1,16 +1,14 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Loading from "./Loading";
 import { FilterWrapper, Genres, Button } from "./styling/FilterBarStyles";
 import { MovieContext } from "./providers/MovieProvider";
 
 const FilterBar = ({ handleSelect, handleUnselect, selectedGenres }) => {
   const { genres, setGenres } = useContext(MovieContext);
-  // const [genres, setGenres] = useState();
-  //test test test for the button to stay active
-  // const [active, setActive] = useState();
   const activeStyle = {
     background:
-      "linear-gradient(90deg,rgb(253, 36, 29) 5%,rgb(255, 128, 55) 100%)"
+      "linear-gradient(90deg,rgb(253, 36, 29) 5%,rgb(255, 128, 55) 100%)",
+    color: "whitesmoke"
   };
   const toggleActive = id => {
     if (isActive(id)) {
@@ -25,14 +23,13 @@ const FilterBar = ({ handleSelect, handleUnselect, selectedGenres }) => {
   };
 
   useEffect(() => {
-    fetch(`http://localhost:4000/genres`, {
+    fetch(`/genres`, {
       headers: {
         "Content-Type": "application/json",
         Accept: "application/json"
       }
     }).then(res =>
       res.json().then(data => {
-        // console.log("genres", data.data.genres);
         setGenres(data.data.genres);
       })
     );

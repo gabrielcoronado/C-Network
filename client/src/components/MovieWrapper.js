@@ -15,7 +15,7 @@ const MovieWrapper = () => {
   const { id } = useParams();
 
   const handleBlacklist = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/blacklist`, {
+    const res = await fetch(`/movies/${id}/blacklist`, {
       method: "PUT",
       body: JSON.stringify({
         currentUser
@@ -26,11 +26,10 @@ const MovieWrapper = () => {
       }
     });
     const data = await res.json();
-    console.log("blacklisted", data);
   };
 
   const handleSeen = async () => {
-    const res = await fetch(`http://localhost:4000/movies/${id}/seen`, {
+    const res = await fetch(`/movies/${id}/seen`, {
       method: "PUT",
       body: JSON.stringify({
         currentUser
@@ -41,7 +40,6 @@ const MovieWrapper = () => {
       }
     });
     const data = await res.json();
-    console.log("seen", data);
   };
 
   useEffect(() => {
@@ -52,7 +50,6 @@ const MovieWrapper = () => {
       }
     }).then(res =>
       res.json().then(data => {
-        // console.log("movie", data.data);
         setMovie(data.data);
       })
     );
@@ -61,6 +58,7 @@ const MovieWrapper = () => {
   return movie ? (
     <Wrapper>
       <Movie
+        style={{ opacity: "1" }}
         movieData={movie}
         handleSeen={handleSeen}
         handleBlacklist={handleBlacklist}
