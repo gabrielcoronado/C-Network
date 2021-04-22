@@ -5,13 +5,10 @@ export const Wrapper = styled.div`
   margin: 0 auto;
   padding: 40px 60px;
   max-width: 1300px;
-  /* background: transparent; */
   width: 100%;
-  /* border-bottom: 1px solid black; */
   background-position: right -200px top;
   background-size: cover;
   background-repeat: no-repeat;
-  /* background-image: url(https://www.themoviedb.org/t/p/w1920_and_h800_multi_faces/uQtqiAu2bBlokqjlURVLEha6zoi.jpg); */
 `;
 
 export const Poster = styled.img`
@@ -19,10 +16,12 @@ export const Poster = styled.img`
   height: 450px;
 `;
 
+export const Background = styled.div`
+  height: 400px;
+`;
+
 export const MovieWrapper = styled.div`
-  /* padding: 0 40px; */
   display: flex;
-  /* background: transparent; */
   width: 100%;
   opacity: 1;
 `;
@@ -38,7 +37,6 @@ export const Tagline = styled.div`
 `;
 
 export const Button = styled.button`
-  /* background-color: #032541; */
   background-color: transparent;
   border-radius: 50%;
   cursor: pointer;

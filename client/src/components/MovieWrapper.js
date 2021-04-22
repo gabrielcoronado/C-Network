@@ -61,6 +61,7 @@ const MovieWrapper = () => {
   return movie ? (
     <Wrapper>
       <Movie
+        style={{ opacity: "1" }}
         movieData={movie}
         handleSeen={handleSeen}
         handleBlacklist={handleBlacklist}

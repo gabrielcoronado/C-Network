@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import profile from "./assets/PaiMei.jpeg";
 import Rating from "./post/Rating";
-import Loading from "./Loading";
 import moment from "moment";
 import {
   Wrapper,

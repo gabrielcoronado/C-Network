@@ -1,7 +1,15 @@
 import React, { useContext, useState, useEffect } from "react";
 import { MovieContext } from "./providers/MovieProvider";
 import { UserContext } from "./providers/UserProvider";
-import { Wrapper, TrendingWrapper, SearchWrapper } from "./styling/FeedStyles";
+import {
+  Wrapper,
+  TrendingWrapper,
+  SearchWrapper,
+  RankWrapper
+} from "./styling/FeedStyles";
+import { Button } from "./styling/HomepageStyles";
+import { useHistory } from "react-router-dom";
+
 // import profile from "../PaiMei.jpeg";
 import SearchBar from "./SearchBar";
 import Trending from "./Trending";
@@ -12,8 +20,12 @@ import Ranking from "./Ranking";
 const Profile = () => {
   const { dailyTrends, weeklyTrends } = useContext(MovieContext);
   const { currentUser } = useContext(UserContext);
-
   const [reviews, setReviews] = useState([]);
+  const history = useHistory();
+
+  const toRandomMovie = () => {
+    history.push("movies/randomsearch");
+  };
 
   useEffect(() => {
     //Including the currentUser to get a complete feed
@@ -38,12 +50,14 @@ const Profile = () => {
 
   return currentUser ? (
     <Wrapper className="wrapper">
-      {/* {console.log("currentUser", currentUser)} */}
-      <Ranking />
+      <RankWrapper>
+        <Ranking />
+        <Button onClick={() => toRandomMovie()}>Random Movie Picker</Button>
+      </RankWrapper>
       <Reviews user={currentUser} reviews={reviews} />
       <TrendingWrapper>
         <SearchWrapper>
-          <SearchBar />
+          <SearchBar redirect="true" />
         </SearchWrapper>
         <Trending trends={dailyTrends} />
         <Trending trends={weeklyTrends} />

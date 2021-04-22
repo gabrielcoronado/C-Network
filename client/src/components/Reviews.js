@@ -8,7 +8,7 @@ const Reviews = ({ reviews, tagName, user }) => {
   return reviews ? (
     <ReviewsWrapper>
       <TitleWrapper>
-        <h3>Feed:</h3>
+        <h3>Feed</h3>
       </TitleWrapper>
       {reviews.map(review => {
         return (

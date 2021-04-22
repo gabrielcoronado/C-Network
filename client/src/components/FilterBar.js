@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useEffect, useContext } from "react";
 import Loading from "./Loading";
 import { FilterWrapper, Genres, Button } from "./styling/FilterBarStyles";
 import { MovieContext } from "./providers/MovieProvider";

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import { BiSearch } from "react-icons/bi";
 import { useHistory } from "react-router-dom";
-
+import UserImg from "./assets/placeholderImg.png";
 const UserSearch = () => {
   const [userSearchInput, setUserSearchInput] = useState("");
   const [searchResult, setSearchResult] = useState();
@@ -32,7 +32,6 @@ const UserSearch = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("data", data.data);
           setSearchResult(data.data);
           setSubmitted(false);
         })
@@ -61,27 +60,37 @@ const UserSearch = () => {
           <BiSearch />
         </Search>
       </SearchWrapper>
-      {searchResult &&
-        searchResult.map(user => {
-          return (
-            <User
-              key={user._id}
-              onClick={() => history.push(`/users/${user._id}`)}
-            >
-              {user.photoURL ? (
-                <img src={user.photoURL} alt="photoURL" />
-              ) : null}
-              <div>{user.name}</div>
-              <div>{user.reviewsCount}</div>
-            </User>
-          );
-        })}
+      <UserWrapper>
+        {searchResult &&
+          searchResult.map(user => {
+            return (
+              <User
+                key={user._id}
+                onClick={() => history.push(`/users/${user._id}`)}
+              >
+                {user.photoURL ? (
+                  <ProfilePic src={user.photoURL} alt="photoURL" />
+                ) : (
+                  <ProfilePic src={UserImg} alt="photoURL" />
+                )}
+                <UserInfo>
+                  <div>{user.name}</div>
+                  <div>Reviews:{user.reviewsCount}</div>
+                </UserInfo>
+              </User>
+            );
+          })}
+      </UserWrapper>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   margin: 0 auto;
+`;
+
+const UserInfo = styled.div`
+  padding-left: 20px;
 `;
 
 const SearchWrapper = styled.div`
@@ -95,7 +104,14 @@ const SearchWrapper = styled.div`
   width: 431px;
 `;
 
-const User = styled.div``;
+const User = styled.div`
+  display: flex;
+`;
+
+const UserWrapper = styled.div`
+  margin: 0 auto;
+  text-align: center;
+`;
 
 const Search = styled.div`
   background: transparent;
@@ -110,6 +126,11 @@ const Search = styled.div`
   color: gray;
   left: 415px;
   top: 8px;
+`;
+
+const ProfilePic = styled.img`
+  border-radius: 50%;
+  height: 50px;
 `;
 
 const Input = styled.input`

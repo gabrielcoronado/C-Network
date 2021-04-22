@@ -1,8 +1,9 @@
 import styled from "styled-components";
 
 export const Wrapper = styled.div`
-  padding: 20px 40px 20px 60px;
+  padding: 20px 50px;
   margin: 0 auto;
+  /* width: 50vw; */
   display: flex;
 `;
 
@@ -11,10 +12,19 @@ export const TrendingWrapper = styled.div`
   flex-direction: column;
 `;
 
-export const User = styled.div`
-  display: flex;
+export const RankWrapper = styled.div`
   margin: 0 auto;
+`;
+
+export const User = styled.div`
+  border-bottom: 1px solid gray;
+  justify-content: center;
   margin-bottom: 50px;
+  min-width: 50vw;
+  margin: 0 auto;
+  display: flex;
+  height: 180px;
+  width: 50vw;
 `;
 
 export const UserStats = styled.div`
@@ -28,7 +38,7 @@ export const SearchWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-export const Name = styled.h2``;
+export const Name = styled.h3``;
 
 export const ReviewCount = styled.div`
   padding-left: 20px;

@@ -29,12 +29,11 @@ const Profile = () => {
         }
       }).then(res =>
         res.json().then(data => {
-          console.log("user", data.data);
           setUser(data.data);
         })
       );
     }
-  }, [currentUser]);
+  }, [id, currentUser]);
 
   return user ? (
     <ProfileWrapper>
@@ -51,7 +50,7 @@ const Profile = () => {
           >
             Feed
           </Button>
-          {user.id === currentUser.id ? (
+          {user._id === currentUser._id ? (
             <>
               <Button
                 style={

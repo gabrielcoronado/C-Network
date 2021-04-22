@@ -2,6 +2,7 @@ import React, { useContext } from "react";
 import { UserContext } from "./providers/UserProvider";
 import styled from "styled-components";
 import { useHistory } from "react-router-dom";
+import profile from "./assets/placeholderImg.png";
 
 const Ranking = () => {
   const history = useHistory();
@@ -13,15 +14,17 @@ const Ranking = () => {
   return ranking ? (
     <RankingWrapper>
       <TitleWrapper>
-        <h3>Ranking:</h3>
+        <h3>Ranking</h3>
       </TitleWrapper>
       <RankWrapper>
         {ranking.map(rank => {
           return (
-            <Rank key={rank.name} onClick={() => handleUserPage(rank.id)}>
+            <Rank key={rank.name} onClick={() => handleUserPage(rank._id)}>
               {rank && rank.photoURL ? (
                 <ProfilePic src={rank.photoURL} />
-              ) : null}
+              ) : (
+                <ProfilePic src={profile} />
+              )}
               <Info>
                 <Name>{rank.name}</Name>
                 {rank && !rank.reviewsCount ? null : (
@@ -37,7 +40,7 @@ const Ranking = () => {
 };
 
 const RankingWrapper = styled.div`
-  width: 180px;
+  width: 240px;
 `;
 
 const TitleWrapper = styled.div`

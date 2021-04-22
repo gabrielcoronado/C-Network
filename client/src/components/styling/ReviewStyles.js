@@ -16,6 +16,7 @@ export const ReviewsWrapper = styled.div`
   color: whitesmoke;
   margin: 0 auto;
   min-width: 40vw;
+  border-radius: 10px;
   width: 40vw;
 `;
 

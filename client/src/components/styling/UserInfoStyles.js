@@ -5,9 +5,9 @@ export const Button = styled.button`
   outline: none;
   cursor: pointer;
   height: 33px;
-  width: 75px;
+  width: 80px;
   margin-top: 22px;
-  margin-left: 15px;
+  margin-left: 10px;
   border-radius: 10px;
   background-image: linear-gradient(
     90deg,
@@ -16,10 +16,15 @@ export const Button = styled.button`
   );
 `;
 
+export const UnfollowButton = styled(Button)`
+  background: gray;
+`;
+
 export const Header = styled.div`
   display: flex;
 `;
 
 export const Info = styled.div`
   display: flex;
+  font-size: 15px;
 `;

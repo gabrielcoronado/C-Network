@@ -1,15 +1,14 @@
-import React, { useContext, useEffect } from "react";
-import profile from "./assets/PaiMei.jpeg";
+import React, { useContext } from "react";
+import profile from "./assets/placeholderImg.png";
 import { User, UserStats, Name, ReviewCount, Img } from "./styling/FeedStyles";
 import { UserContext } from "./providers/UserProvider";
-import { Button, Header, Info } from "./styling/UserInfoStyles";
+import { Button, Header, Info, UnfollowButton } from "./styling/UserInfoStyles";
 
 const UserInfo = ({ user }) => {
   // console.log("user", user);
   const { appUser, currentUser, setUpdateCurrentUser } = useContext(
     UserContext
   );
-  console.log("appUser", appUser);
 
   const testFunction = async action => {
     const res = await fetch(`/users/${user._id}/${action}`, {
@@ -45,7 +44,9 @@ const UserInfo = ({ user }) => {
           {appUser.following &&
           appUser._id !== user._id &&
           appUser.following.includes(user._id) ? (
-            <Button onClick={() => handleUnfollow()}>Unfollow</Button>
+            <UnfollowButton onClick={() => handleUnfollow()}>
+              Unfollow
+            </UnfollowButton>
           ) : appUser.following &&
             appUser._id !== user._id &&
             !appUser.following.includes(user._id) ? (

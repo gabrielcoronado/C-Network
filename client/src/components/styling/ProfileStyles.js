@@ -9,19 +9,27 @@ export const ProfileWrapper = styled.div`
 `;
 
 export const FeedWrapper = styled.div`
-  padding: 15px 30px 30px 30px;
+  padding: 25px 30px 30px 30px;
   margin-bottom: 30px;
   width: 50vw;
   display: flex;
   margin: 0 auto;
   flex-direction: column;
   border-bottom: 1px solid gray;
+
+  border: 1px solid gray;
+  border-radius: 10px;
+
+  border: 1px solid gray;
+  border-radius: 10px;
+  padding-top: 25px;
 `;
 
 export const Filters = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 30px;
+  margin-top: -35px;
 `;
 
 export const Button = styled.button`
