@@ -8,6 +8,7 @@ import {
 } from "./styling/RandomMovieStyles";
 import { UserContext } from "./providers/UserProvider";
 import FilterBar from "./FilterBar";
+import { useHistory } from "react-router-dom";
 import Loading from "./Loading";
 import Movie from "./Movie";
 
@@ -16,6 +17,7 @@ const RandomMovie = () => {
   const [generateRandom, setGenerateRandom] = useState(true);
   const { currentUser } = useContext(UserContext);
   const [random, setRandom] = useState(null);
+
   const handleSelect = id => {
     setSelectedGenres([...selectedGenres, id]);
   };
@@ -47,15 +49,15 @@ const RandomMovie = () => {
 
   return (
     <Wrapper>
-      <FilterBar
-        handleSelect={handleSelect}
-        handleUnselect={handleUnselect}
-        selectedGenres={selectedGenres}
-      />
+      <Div>
+        <H1>Random Movie Picker</H1>
+        <FilterBar
+          handleSelect={handleSelect}
+          handleUnselect={handleUnselect}
+          selectedGenres={selectedGenres}
+        />
+      </Div>
       <MovieResult>
-        <Div>
-          <H1>Random Movie Picker</H1>
-        </Div>
         {random ? <Movie size="small" movieData={random} /> : <Loading />}
         <Div>
           <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>

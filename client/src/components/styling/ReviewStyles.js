@@ -5,27 +5,30 @@ export const Wrapper = styled.div`
   padding: 15px 30px 30px 30px;
   margin-bottom: 30px;
   display: flex;
-  /* min-width: 40vw;
-  width: 40vw; */
 `;
 
 export const ReviewsWrapper = styled.div`
   border-right: 1px solid gray;
   border-left: 1px solid gray;
-  /* box-shadow: 0px 0px 16px 1px #9e9e9e; */
-  color: whitesmoke;
-  margin: 0 auto;
-  min-width: 40vw;
   border-radius: 10px;
+  color: whitesmoke;
+  min-width: 40vw;
+  margin: 0 auto;
   width: 40vw;
 `;
 
+export const P = styled.p`
+  margin-right: 5px;
+  font-size: 14px;
+  color: gray;
+`;
+
 export const TitleWrapper = styled.div`
-  background: gray;
-  border: 1px solid gray;
-  text-align: center;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
+  border: 1px solid gray;
+  text-align: center;
+  background: gray;
 `;
 
 export const Date = styled.div`
@@ -35,7 +38,7 @@ export const Date = styled.div`
 `;
 
 export const Img = styled.img`
-  margin-right: 15px;
+  margin-right: 10px;
   border-radius: 50%;
   height: 25px;
   width: 25px;

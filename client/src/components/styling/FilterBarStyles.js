@@ -15,8 +15,10 @@ export const FilterWrapper = styled.div`
 `;
 
 export const Genres = styled.div`
-  padding: 10px;
+  width: 80vw;
   display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
 `;
 
 export const Button = styled.span`

@@ -5,6 +5,11 @@ import placeholder from "./assets/placeholderImg.png";
 import Rating from "./post/Rating";
 import moment from "moment";
 import {
+  LoadingPoster,
+  LoadingTitle,
+  LoadingDate
+} from "./styling/LoadingStyled";
+import {
   Wrapper,
   Img,
   Poster,
@@ -14,7 +19,8 @@ import {
   RatingWrapper,
   Comment,
   PostData,
-  Date
+  Date,
+  P
 } from "./styling/ReviewStyles";
 
 const Review = ({ review, user }) => {
@@ -63,18 +69,32 @@ const Review = ({ review, user }) => {
         <Comment>{review.comment}</Comment>
         {review && review.reviewerId !== currentUser._id ? (
           <User onClick={() => handleProfile(review.reviewerId)}>
-            {currentUser.photoURL ? (
-              <Img src={currentUser.photoURL} />
-            ) : (
-              <Img src={placeholder} />
-            )}
-            <Tag>{user && user.name}</Tag>
+            <>
+              <P>By: </P>{" "}
+              {currentUser.photoURL ? (
+                <Img src={currentUser.photoURL} />
+              ) : (
+                <Img src={placeholder} />
+              )}
+              <Tag>{review.reviewer && review.reviewer[0].name}</Tag>
+            </>
           </User>
         ) : null}
       </PostData>
     </Wrapper>
   ) : (
-    <Wrapper></Wrapper>
+    <Wrapper>
+      <div>
+        <LoadingPoster></LoadingPoster>
+      </div>
+      <PostData>
+        <LoadingTitle></LoadingTitle>
+        <LoadingDate></LoadingDate>
+        <RatingWrapper>
+          <Rating rating={0} size={"small"} />
+        </RatingWrapper>
+      </PostData>
+    </Wrapper>
   );
 };
 

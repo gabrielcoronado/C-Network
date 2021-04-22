@@ -1,5 +1,6 @@
 import React from "react";
 import { GoPrimitiveDot } from "react-icons/go";
+import { useHistory } from "react-router-dom";
 import { GiRoundStar } from "react-icons/gi";
 import { ImBlocked } from "react-icons/im";
 import { FaHeart } from "react-icons/fa";
@@ -20,15 +21,14 @@ import {
 } from "./styling/MovieStyles";
 
 const Movie = ({
-  size,
   movieData,
   setHidden,
   handleSeen,
   handleBlacklist,
   hidden
 }) => {
+  const history = useHistory();
   const base_url = `https://image.tmdb.org`;
-  // const backdropSize = `/t/p/original`;
   const posterSize = `/t/p/w500`;
 
   const time_converter = num => {
@@ -37,17 +37,29 @@ const Movie = ({
     return hours + "h " + minutes + "m";
   };
 
+  const singleMovieHandle = id => {
+    history.push(`/movies/${id}`);
+  };
+
   return movieData ? (
     <MovieWrapper>
       <ReactTooltip place="bottom" backgroundColor="white" textColor="black" />
       {movieData && movieData.poster_path ? (
-        <Poster src={base_url + posterSize + movieData.poster_path} />
+        <Poster
+          onClick={() => singleMovieHandle(movieData.id)}
+          src={base_url + posterSize + movieData.poster_path}
+        />
       ) : (
-        <Poster src={logo} style={{ height: "400px", width: "266px" }} />
+        <Poster
+          onClick={() => singleMovieHandle(movieData.id)}
+          src={logo}
+          style={{ height: "400px", width: "266px" }}
+        />
       )}
       <MovieInfo>
-        <H1>{movieData.title}</H1>
-        {/* //DETAILS - THIS CAN GO IN 1 COMPONENT */}
+        <H1 onClick={() => singleMovieHandle(movieData.id)}>
+          {movieData.title}
+        </H1>
         <Details>
           <div>{movieData.release_date}</div>
           <Lang>
@@ -69,7 +81,6 @@ const Movie = ({
           <GoPrimitiveDot size={11} />
           <Runtime>{time_converter(movieData.runtime)}</Runtime>
         </Details>
-        {/* UP UNTIL HERE */}
         <Button
           data-tip="Create a review!"
           onClick={() => setHidden && setHidden(!hidden)}
