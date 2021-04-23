@@ -40,7 +40,7 @@ const UserInfo = ({ user }) => {
       {user.photoURL ? <Img src={user.photoURL} /> : <Img src={profile} />}
       <UserStats>
         <Header>
-          <Name>{user.name}</Name>
+          <h3>{user.name}</h3>
           {appUser.following &&
           appUser._id !== user._id &&
           appUser.following.includes(user._id) ? (

@@ -18,7 +18,6 @@ export const Poster = styled.img`
 
 export const Error = styled.div`
   justify-content: center;
-  /* text-align: center; */
 `;
 
 export const Background = styled.div`

@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   margin: 0 auto;
 `;
 
-export const Button = styled.button`
+export const SearchButton = styled.button`
   width: 180px;
   height: 50px;
   border-radius: 10px;
