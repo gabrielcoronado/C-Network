@@ -18,6 +18,7 @@ export const CardWrapper = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-top: 50px;
+  padding-left: 30px;
 `;
 
 export const Card = styled.div`

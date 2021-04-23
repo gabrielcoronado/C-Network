@@ -3,8 +3,8 @@ import styled from "styled-components";
 export const Wrapper = styled.div`
   padding: 20px 50px;
   margin: 0 auto;
-  /* width: 50vw; */
   display: flex;
+  min-width: 500px;
 `;
 
 export const TrendingWrapper = styled.div`
@@ -38,14 +38,12 @@ export const SearchWrapper = styled.div`
   margin-bottom: 25px;
 `;
 
-export const Name = styled.h3``;
-
 export const ReviewCount = styled.div`
   padding-left: 20px;
 `;
 
 export const Img = styled.img`
-  height: 140px;
-  width: 140px;
+  height: 100px;
+  width: 100px;
   border-radius: 50%;
 `;

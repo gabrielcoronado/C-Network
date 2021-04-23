@@ -57,7 +57,6 @@ const Wrapper = styled.header`
 
 const StyledLink = styled(Link)`
   text-decoration: none;
-  margin-left: 15px;
   cursor: pointer;
   font-size: 16px;
   display: flex;
@@ -74,7 +73,6 @@ const StyledButton = styled.button`
 `;
 
 const P = styled.p`
-  padding-left: 10px;
   cursor: pointer;
   font-size: 23px;
   width: 250px;
@@ -91,7 +89,8 @@ const Nav = styled.div`
 
 const Span = styled.span`
   border-right: 1px solid white;
-  padding-right: 10px;
+  padding-right: 15px;
+  padding-left: 15px;
 `;
 
 export default NavBar;

@@ -2,15 +2,16 @@ import styled from "styled-components";
 
 export const Wrapper = styled.div`
   border-bottom: 1px solid gray;
-  padding: 15px 30px 30px 30px;
-  margin-bottom: 30px;
+  padding: 25px 30px 30px 30px;
+  margin-bottom: 2px;
   display: flex;
 `;
 
 export const ReviewsWrapper = styled.div`
   border-right: 1px solid gray;
   border-left: 1px solid gray;
-  border-radius: 10px;
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
   color: whitesmoke;
   min-width: 40vw;
   margin: 0 auto;

@@ -1,15 +1,22 @@
 import React, { useEffect, useState, useContext } from "react";
 import {
   Wrapper,
-  Button,
+  SearchButton,
   MovieResult,
   Div,
   H1
 } from "./styling/RandomMovieStyles";
+import {
+  LoadingMoviePoster,
+  LoadingMovieTitle,
+  LoadingMovieLine,
+  MovieDiv
+} from "./styling/LoadingStyled";
+import { MovieWrapper, Button } from "./styling/MovieStyles";
 import { UserContext } from "./providers/UserProvider";
+import { ImBlocked } from "react-icons/im";
+import { FaHeart } from "react-icons/fa";
 import FilterBar from "./FilterBar";
-import { useHistory } from "react-router-dom";
-import Loading from "./Loading";
 import Movie from "./Movie";
 
 const RandomMovie = () => {
@@ -61,10 +68,26 @@ const RandomMovie = () => {
         {random ? (
           <Movie hideReview size="small" movieData={random} />
         ) : (
-          <Loading />
+          <MovieWrapper>
+            <LoadingMoviePoster></LoadingMoviePoster>
+            <MovieDiv>
+              <LoadingMovieTitle></LoadingMovieTitle>
+              <LoadingMovieLine></LoadingMovieLine>
+              <div>
+                <Button>
+                  <FaHeart size={20} color="gray" />
+                </Button>
+                <Button>
+                  <ImBlocked size={20} color="gray" />
+                </Button>
+              </div>
+            </MovieDiv>
+          </MovieWrapper>
         )}
         <Div>
-          <Button onClick={() => setGenerateRandom(true)}>Reroll!</Button>
+          <SearchButton onClick={() => setGenerateRandom(true)}>
+            Reroll!
+          </SearchButton>
         </Div>
       </MovieResult>
     </Wrapper>
